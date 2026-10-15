@@ -1,0 +1,8 @@
+bandit==1.9.4
+jsonschema
+langchain-core
+langgraph
+langchain-ollama
+langchain-openai
+pygraphviz
+jsonschema
