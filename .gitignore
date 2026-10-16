@@ -6,3 +6,4 @@ todo/
 .venv/
 __pycache__/
 *.pyc
+questions.md

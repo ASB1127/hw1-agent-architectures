@@ -35,7 +35,6 @@ packaging==26.3
 pydantic==2.14.1
 pydantic-core==2.50.1
 pygments==2.21.0
-pygraphviz==2.0.3
 pyyaml==6.0.3
 referencing==0.37.0
 regex==2026.9.29

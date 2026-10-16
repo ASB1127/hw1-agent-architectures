@@ -20,29 +20,28 @@ Each run generates:
 - Git
 - pip
 - An OpenAI API key
-- Graphviz system libraries for PyGraphviz
 
 On macOS:
 
 ```bash
-brew install python@3.12 graphviz
+brew install python@3.12
 ```
 
-On **Ubuntu 24.04**, install Python 3.12, virtual-environment support, and Graphviz:
+On **Ubuntu 24.04**, install Python 3.12 and virtual-environment support:
 
 ```bash
 sudo apt-get update
-sudo apt-get install -y python3.12 python3.12-venv graphviz graphviz-dev pkg-config
+sudo apt-get install -y python3.12 python3.12-venv
 ```
 
-On **Ubuntu 22.04**, add the Deadsnakes PPA to install Python 3.12, then install Graphviz:
+On **Ubuntu 22.04**, add the Deadsnakes PPA to install Python 3.12:
 
 ```bash
 sudo apt-get update
 sudo apt-get install -y software-properties-common
 sudo add-apt-repository -y ppa:deadsnakes/ppa
 sudo apt-get update
-sudo apt-get install -y python3.12 python3.12-venv graphviz graphviz-dev pkg-config
+sudo apt-get install -y python3.12 python3.12-venv
 ```
 
 These Ubuntu commands are distribution-specific; other Linux distributions, including Debian, require their own Python 3.12 installation method. In all cases, `python3.12` must be available before proceeding.
