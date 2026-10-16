@@ -28,14 +28,24 @@ On macOS:
 brew install python@3.12 graphviz
 ```
 
-On Ubuntu/Debian, install Graphviz and its development dependencies:
+On **Ubuntu 24.04**, install Python 3.12, virtual-environment support, and Graphviz:
 
 ```bash
 sudo apt-get update
-sudo apt-get install -y graphviz graphviz-dev pkg-config
+sudo apt-get install -y python3.12 python3.12-venv graphviz graphviz-dev pkg-config
 ```
 
-Python 3.12 must also be installed and available as `python3.12`.
+On **Ubuntu 22.04**, add the Deadsnakes PPA to install Python 3.12, then install Graphviz:
+
+```bash
+sudo apt-get update
+sudo apt-get install -y software-properties-common
+sudo add-apt-repository -y ppa:deadsnakes/ppa
+sudo apt-get update
+sudo apt-get install -y python3.12 python3.12-venv graphviz graphviz-dev pkg-config
+```
+
+These Ubuntu commands are distribution-specific; other Linux distributions, including Debian, require their own Python 3.12 installation method. In all cases, `python3.12` must be available before proceeding.
 
 ## 2. Installation
 
