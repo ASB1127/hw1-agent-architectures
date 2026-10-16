@@ -5,10 +5,10 @@ min_severity = "MEDIUM"
 bandit_version = "1.9.4"
 
 [model]
-provider = "ollama"
-name = "qwen3.5:9b"
+provider = "openai"
+name = "gpt-5.4"
 
 [budget]
-max_tokens = 200000
+max_tokens = 400000
 output_allowance = 1024
-max_steps = 12
+max_steps = 24

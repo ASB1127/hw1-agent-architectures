@@ -10,11 +10,12 @@ graph TD;
 	submit(submit)
 	__end__([<p>__end__</p>]):::last
 	__start__ --> controller;
+	controller -.-> __end__;
 	controller -.-> submit;
 	controller -.-> tools;
 	submit -.-> __end__;
-	tools --> controller;
+	tools -.-> __end__;
+	tools -.-> controller;
 	classDef default fill:#f2f0ff,line-height:1.2
 	classDef first fill-opacity:0
 	classDef last fill:#bfb6fc
-

@@ -2,3 +2,7 @@ targets/
 html/
 tests/
 todo/
+.env
+.venv/
+__pycache__/
+*.pyc

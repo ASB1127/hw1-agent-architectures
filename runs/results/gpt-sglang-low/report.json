@@ -1,0 +1,286 @@
+{
+  "target": {
+    "input": "targets/sglang",
+    "commit": "bbe9c7eeb520b0a67e92d133dfc137a3688dc7f2"
+  },
+  "scan": {
+    "bandit_version": "1.9.4",
+    "min_severity": "MEDIUM",
+    "alert_count": 21
+  },
+  "budget": {
+    "max_tokens": 5000,
+    "used_tokens": 7481,
+    "exhausted": true
+  },
+  "alerts": [
+    {
+      "alert_id": "group_coordinator-532-B301-930483a85d29",
+      "test_id": "B301",
+      "path": "python/sglang/multimodal_gen/runtime/distributed/group_coordinator.py",
+      "line": 532,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": 0,
+      "status": "classified",
+      "rationale": "The flagged pickle.loads only deserializes bytes received over torch.distributed from another rank in the same process group. In this file, the matching sender serializes the object with pickle.dumps and sends it to a validated in-group destination rank; recv_object validates src is an in-group rank and is used here to receive internal metadata between ranks, not attacker-controlled external input. No evidence in the inspected code shows untrusted input reaching pickle.loads.",
+      "evidence": [
+        {
+          "path": "python/sglang/multimodal_gen/runtime/distributed/group_coordinator.py",
+          "start_line": 473,
+          "end_line": 490
+        },
+        {
+          "path": "python/sglang/multimodal_gen/runtime/distributed/group_coordinator.py",
+          "start_line": 500,
+          "end_line": 533
+        },
+        {
+          "path": "python/sglang/multimodal_gen/runtime/distributed/group_coordinator.py",
+          "start_line": 667,
+          "end_line": 676
+        }
+      ]
+    },
+    {
+      "alert_id": "utils-116-B301-5c20fb0b0447",
+      "test_id": "B301",
+      "path": "python/sglang/multimodal_gen/runtime/distributed/utils.py",
+      "line": 116,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "budget_exhausted",
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "utils-136-B301-044fa185dd59",
+      "test_id": "B301",
+      "path": "python/sglang/multimodal_gen/runtime/distributed/utils.py",
+      "line": 136,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "budget_exhausted",
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "component_loader-270-B615-da43bebebf42",
+      "test_id": "B615",
+      "path": "python/sglang/multimodal_gen/runtime/loader/component_loaders/component_loader.py",
+      "line": 270,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "budget_exhausted",
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "component_loader-282-B615-fdcb8838723e",
+      "test_id": "B615",
+      "path": "python/sglang/multimodal_gen/runtime/loader/component_loaders/component_loader.py",
+      "line": 282,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "budget_exhausted",
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "component_loader-294-B615-59d3b87f8d53",
+      "test_id": "B615",
+      "path": "python/sglang/multimodal_gen/runtime/loader/component_loaders/component_loader.py",
+      "line": 294,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "budget_exhausted",
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "weight_utils-235-B614-dfb3e9fde1f7",
+      "test_id": "B614",
+      "path": "python/sglang/multimodal_gen/runtime/loader/weight_utils.py",
+      "line": 235,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "budget_exhausted",
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "scheduler-276-B301-cf9c8cca4865",
+      "test_id": "B301",
+      "path": "python/sglang/multimodal_gen/runtime/managers/scheduler.py",
+      "line": 276,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "budget_exhausted",
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "bert-22-B615-7394f56cdf57",
+      "test_id": "B615",
+      "path": "python/sglang/multimodal_gen/runtime/models/encoders/bert.py",
+      "line": 22,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "budget_exhausted",
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "bert-25-B615-f91c3a4fc792",
+      "test_id": "B615",
+      "path": "python/sglang/multimodal_gen/runtime/models/encoders/bert.py",
+      "line": 25,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "budget_exhausted",
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "registry-186-B301-00fb9229b41f",
+      "test_id": "B301",
+      "path": "python/sglang/multimodal_gen/runtime/models/registry.py",
+      "line": 186,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "budget_exhausted",
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "vision_utils-107-B113-4a5422ecee10",
+      "test_id": "B113",
+      "path": "python/sglang/multimodal_gen/runtime/models/vision_utils.py",
+      "line": 107,
+      "severity": "MEDIUM",
+      "confidence": "LOW",
+      "label": null,
+      "status": "budget_exhausted",
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "vision_utils-160-B113-ce5bc8a34ed1",
+      "test_id": "B113",
+      "path": "python/sglang/multimodal_gen/runtime/models/vision_utils.py",
+      "line": 160,
+      "severity": "MEDIUM",
+      "confidence": "LOW",
+      "label": null,
+      "status": "budget_exhausted",
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "qwen_image_layered-121-B615-263e7eea7fe7",
+      "test_id": "B615",
+      "path": "python/sglang/multimodal_gen/runtime/pipelines_core/stages/model_specific_stages/qwen_image_layered.py",
+      "line": 121,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "budget_exhausted",
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "scheduler_client-29-B301-2de704a38d25",
+      "test_id": "B301",
+      "path": "python/sglang/multimodal_gen/runtime/scheduler_client.py",
+      "line": 29,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "budget_exhausted",
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "scheduler_client-166-B301-7968b9341aee",
+      "test_id": "B301",
+      "path": "python/sglang/multimodal_gen/runtime/scheduler_client.py",
+      "line": 166,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "budget_exhausted",
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "distributed-57-B301-1246fc620e9f",
+      "test_id": "B301",
+      "path": "python/sglang/multimodal_gen/runtime/utils/distributed.py",
+      "line": 57,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "budget_exhausted",
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "hf_diffusers_utils-794-B615-f55b32343897",
+      "test_id": "B615",
+      "path": "python/sglang/multimodal_gen/runtime/utils/hf_diffusers_utils.py",
+      "line": 794,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "budget_exhausted",
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "hf_diffusers_utils-839-B615-87fde9a54f1e",
+      "test_id": "B615",
+      "path": "python/sglang/multimodal_gen/runtime/utils/hf_diffusers_utils.py",
+      "line": 839,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "budget_exhausted",
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "replay_request_dump-57-B301-c2b34b2c5c11",
+      "test_id": "B301",
+      "path": "scripts/playground/replay_request_dump.py",
+      "line": 57,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "budget_exhausted",
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "replay_request_dump-83-B113-25baed3fe1d2",
+      "test_id": "B113",
+      "path": "scripts/playground/replay_request_dump.py",
+      "line": 83,
+      "severity": "MEDIUM",
+      "confidence": "LOW",
+      "label": null,
+      "status": "budget_exhausted",
+      "rationale": "",
+      "evidence": []
+    }
+  ]
+}

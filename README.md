@@ -18,4 +18,4 @@ There is no starter code. You design and write every part of the agent.
 
 Clone targets into `targets/` (git-ignored). Your own `README.md` must tell us how to run your agent end to end, with `configs/full.toml` and `configs/low.toml` (brief, Section 10).
 
-Tool limits: `read_file` returns at most 500 lines per call and names the next `start` when truncated; `search` returns at most 10 matches.
+Tool limits: `read_file` returns at most 200 lines per call and names the next `start` when truncated; `search` returns at most 10 matches.

@@ -1,0 +1,144 @@
+{
+  "target": {
+    "input": "targets/Radicale",
+    "commit": "eff8027f3dc4910be1659ee71f4b4a454ade5a8c"
+  },
+  "scan": {
+    "bandit_version": "1.9.4",
+    "min_severity": "MEDIUM",
+    "alert_count": 10
+  },
+  "budget": {
+    "max_tokens": 200000,
+    "used_tokens": 50254,
+    "exhausted": false
+  },
+  "alerts": [
+    {
+      "alert_id": "oauth2-60-B113-9e6ff47978ba",
+      "test_id": "B113",
+      "path": "radicale/auth/oauth2.py",
+      "line": 60,
+      "severity": "MEDIUM",
+      "confidence": "LOW",
+      "label": 0,
+      "status": "classified",
+      "rationale": "The requests.post() call uses a configuration-based endpoint (not per-request attacker input) and is part of standard OAuth2 credential validation flow; Bandit's LOW confidence reflects that missing timeout on well-behaved upstream servers isn't directly exploitable through user-controlled inputs in this context.",
+      "evidence": [
+        {
+          "path": "radicale/auth/oauth2.py",
+          "start_line": 38,
+          "end_line": 41
+        }
+      ]
+    },
+    {
+      "alert_id": "__init__-227-B324-b51fec0fcc63",
+      "test_id": "B324",
+      "path": "radicale/hook/email/__init__.py",
+      "line": 227,
+      "severity": "HIGH",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "error",
+      "rationale": "model reply is not one JSON object",
+      "evidence": []
+    },
+    {
+      "alert_id": "files-131-B301-d7e275a8300f",
+      "test_id": "B301",
+      "path": "radicale/sharing/files.py",
+      "line": 131,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "error",
+      "rationale": "model reply is not one JSON object",
+      "evidence": []
+    },
+    {
+      "alert_id": "files-208-B301-700c66e22252",
+      "test_id": "B301",
+      "path": "radicale/sharing/files.py",
+      "line": 208,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "error",
+      "rationale": "model reply is not one JSON object",
+      "evidence": []
+    },
+    {
+      "alert_id": "files-316-B301-61102b08b15c",
+      "test_id": "B301",
+      "path": "radicale/sharing/files.py",
+      "line": 316,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "error",
+      "rationale": "model reply is not one JSON object",
+      "evidence": []
+    },
+    {
+      "alert_id": "files-374-B301-6ea694686549",
+      "test_id": "B301",
+      "path": "radicale/sharing/files.py",
+      "line": 374,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "error",
+      "rationale": "model reply is not one JSON object",
+      "evidence": []
+    },
+    {
+      "alert_id": "cache-109-B301-005a18046420",
+      "test_id": "B301",
+      "path": "radicale/storage/multifilesystem/cache.py",
+      "line": 109,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "error",
+      "rationale": "model reply is not one JSON object",
+      "evidence": []
+    },
+    {
+      "alert_id": "history-53-B301-fc6223a5c14e",
+      "test_id": "B301",
+      "path": "radicale/storage/multifilesystem/history.py",
+      "line": 53,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "error",
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "lock-102-B602-cddb87db82ee",
+      "test_id": "B602",
+      "path": "radicale/storage/multifilesystem/lock.py",
+      "line": 102,
+      "severity": "HIGH",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "error",
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "sync-79-B301-3cdb5b5189ae",
+      "test_id": "B301",
+      "path": "radicale/storage/multifilesystem/sync.py",
+      "line": 79,
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "label": null,
+      "status": "error",
+      "rationale": "",
+      "evidence": []
+    }
+  ]
+}

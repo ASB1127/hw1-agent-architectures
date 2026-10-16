@@ -6,11 +6,12 @@ from pathlib import Path
 
 from langchain_core.tools import tool
 
-from workspace import resolve
+from workspace import resolve, PathEscapeException
 
 
 SEARCH_MAX_HITS = 10
-FILE_MAX_LINES = 500
+FILE_MAX_LINES = 200
+DIR_MAX_ENTRIES = 100
 
 def read_file(ws: Path, path: str, start: int | None = None,
               end: int | None = None) -> str:
@@ -63,10 +64,37 @@ def search(ws: Path, pattern: str, glob: str | None = None) -> list[dict]:
                     return hits
     return hits
 
+def list_directory(ws: Path, path: str = ".") -> list[dict]:
+    """List files and directories in a workspace-relative directory."""
+    target = resolve(ws, path)
+
+    if not target.is_dir():
+        raise FileNotFoundError(f"no such directory: {path}")
+
+    root = Path(ws).resolve()
+    entries = []
+
+    for child in sorted(target.iterdir(), key=lambda p: p.name):
+        # Reuse workspace containment checks for every entry.
+        try:
+            resolved = resolve(root, child.relative_to(root).as_posix())
+        except PathEscapeException:
+            continue
+
+        entries.append({
+            "name": child.name,
+            "type": "directory" if resolved.is_dir() else "file",
+        })
+
+        if len(entries) >= DIR_MAX_ENTRIES:
+            break
+
+    return entries
 
 class TOOLS(Enum):
     read_file = (read_file,)
     search = (search,)
+    list_directory = (list_directory,)
 
     def __call__(self, *args, **kwargs):
         return self.value[0](*args, **kwargs)
@@ -83,7 +111,7 @@ def read_file_schema(path: str, start: int | None = None,
     """Read a repository-relative file.
 
     `start` and `end` select an inclusive, 1-based line range. Each call
-    returns at most 500 lines and names the next `start` when truncated.
+    returns at most 200 lines and names the next `start` when truncated.
     """
     _dispatcher_executes("read_file")
 
@@ -97,11 +125,21 @@ def search_schema(pattern: str, glob: str | None = None) -> str:
     """
     _dispatcher_executes("search")
 
+@tool("list_directory")
+def list_directory_schema(path: str = ".") -> str:
+    """List files and subdirectories at a repository-relative path.
+
+    Returns up to 100 entries. Refuses paths outside the workspace
+    and nonexistent directories.
+    """
+    _dispatcher_executes("list_directory")
+
 
 class ToolBundle:
     READ_FILE = read_file_schema
     SEARCH = search_schema
+    LIST_DIRECTORY = list_directory_schema
 
     @classmethod
     def get_all_tools(cls) -> list:
-        return [cls.READ_FILE, cls.SEARCH]
+        return [cls.READ_FILE, cls.SEARCH, cls.LIST_DIRECTORY]

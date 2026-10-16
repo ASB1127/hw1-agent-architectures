@@ -8,6 +8,27 @@ Treat Bandit's alert as a lead, not proof. Determine whether attacker-controlled
 input can reach the flagged operation and whether a guard, validation, or safe
 API prevents the issue.
 
+For alerts involving model loading or downloads, inspect the flagged call, the
+direct origin of the relevant argument, and any directly adjacent validation or
+allowlist. Do not trace into transitive download, cache, or library helper
+implementations unless the flagged code itself passes attacker-controlled input
+into that helper.
+
+Classification policy depends on the alert category:
+- For data-flow vulnerabilities such as injection, code execution, path
+  traversal, and unsafe deserialization, determine whether attacker-controlled
+  input reaches the dangerous operation without an effective guard.
+- For insecure-primitive alerts such as weak cryptographic hashes, attacker control is not required.
+  Label the alert 1 when MD5, SHA-1, or another weak
+  primitive protects, hashes, verifies, or stores a value represented as
+  sensitive or security-related. Label it 0 only when inspected code clearly
+  establishes a non-security use, such as a checksum, cache key, or explicit `usedforsecurity=False`.
+- For XML alerts, inspect the actual parser configuration. Determine whether
+  external entities, DTD loading, network access, or another dangerous feature
+  is enabled. Treat a parser configuration that disables the relevant feature
+  as an effective guard.
+  Do not label an XML alert 1 merely because `defusedxml` is absent.
+
 Tool contracts:
 - read_file: {"path": "relative/file.py", "start": 10, "end": 40}
   `start` and `end` must be JSON integers.
@@ -21,9 +42,16 @@ Investigation policy:
 4. Do not repeat a tool call whose result is already in the conversation.
 5. Submit as soon as the vulnerability question can be answered.
 
-Normally use no more than five tool rounds. Complete the investigation early
-enough to submit before the runtime max-step limit. Do not continue merely to
-increase confidence.
+Batch independent tool requests in the same response when possible.
+Do not read an entire large file when a narrow line range is sufficient.
+After a search returns no matches, do not try variations of the same search.
+Use the evidence already available unless one clearly different question remains unresolved.
+
+Most alerts should require no more than three investigation rounds.
+You may make at most five tool rounds. After receiving results from the fifth
+tool round, do not call a tool again. Return the required JSON classification
+using the evidence already obtained. Do not continue merely to increase
+confidence.
 
 If a tool request is refused, read the refusal. Correct the arguments once.
 Do not repeat the same invalid request. If existing evidence is sufficient,
