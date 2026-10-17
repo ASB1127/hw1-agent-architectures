@@ -8,7 +8,7 @@
 \usetikzlibrary{arrows.meta,calc,fit,backgrounds}
 
 \title{HW1 Design Report\\\large COMS E6998-019: Design of Production Agentic Systems}
-\author{}
+\author{Amit Bal\\\texttt{asb2332}}
 \date{}
 
 \setlength{\parindent}{0pt}
@@ -317,7 +317,7 @@ SGLang & Low & \texttt{budget\_exhausted} & 0 & 0 & 21 \\
 \noindent\textit{Charged tokens / budget:} OWASP full 65,032 / 400,000; OWASP low 5,808 / 5,000; Radicale full 131,800 / 400,000; Radicale low 6,345 / 5,000; SGLang full 147,155 / 400,000; SGLang low 5,311 / 5,000. Charged usage is provider-reported input plus output tokens; cached-token counts are traced separately.
 
 \subsubsection*{OWASP development-set measurement}
-The new OWASP full run classified all 18 discovered Bandit alerts: 10 with label 1 and 8 with label 0, with no null rows. I matched each alert's \texttt{BenchmarkTest} case identifier to the \texttt{real vulnerability} field in OWASP BenchmarkPython v0.1's \texttt{expectedresults-0.1.csv} (official repository: \url{https://github.com/OWASP-Benchmark/BenchmarkPython/blob/main/expectedresults-0.1.csv}). This is an \emph{alert-row-level} evaluation, not a unique-case evaluation: \texttt{BenchmarkTest00017} contributes two separate Bandit alerts. The comparison gives 8 true positives (TP), 2 false positives (FP), 8 true negatives (TN), and 0 false negatives (FN). Hence precision is \(TP/(TP+FP)=8/10=80.0\%\), and recall is \(TP/(TP+FN)=8/8=100.0\%\). The two false-positive alert rows belong to \texttt{BenchmarkTest00017} (B317) and \texttt{BenchmarkTest00075} (B102); both cases are marked non-vulnerable by the benchmark key. These figures describe only the 18 alerts Bandit discovered, not all 1,230 benchmark cases or the agent's ability to discover vulnerabilities absent from Bandit's output. The low-budget run classified two alerts as label 0 and marked the remaining 16 \texttt{budget\_exhausted}; those null outcomes are excluded from the full-run precision/recall calculation. The false positives illustrate why source-level evidence and conservative interpretation of flagged APIs matter, reinforcing the prompt refinements described below.
+The OWASP full run classified all 18 Bandit alerts: 10 label 1, 8 label 0, and no null rows. I matched each alert row's case identifier to the \texttt{real vulnerability} field in \texttt{expectedresults-0.1.}\allowbreak\texttt{csv}. This is an alert-row evaluation, so \texttt{BenchmarkTest00017} contributes two alerts. The result is 8 true positives, 2 false positives, 8 true negatives, and 0 false negatives: precision is \(8/10=80.0\%\) and recall is \(8/8=100.0\%\). The false positives are \texttt{BenchmarkTest00017} (B317) and \texttt{BenchmarkTest00075} (B102), both marked non-vulnerable by the benchmark key. These metrics cover only the 18 alerts Bandit found, not all 1,230 benchmark cases or vulnerabilities Bandit did not report. The low-budget run classified two alerts as label 0 and marked the other 16 \texttt{budget\_exhausted}; those null rows are excluded from the full-run metrics. The false positives motivated the conservative, evidence-based prompt refinements below.
 
 \noindent\textbf{Held-out run interpretation}\par\nobreak\noindent Radicale full completed all 10 alerts (3 label 1, 7 label 0). SGLang full stopped with terminal status \texttt{max\_steps}: five alerts were classified (1 label 1, 4 label 0), and 16 alerts have null labels and \texttt{error} report-row status. All three low-budget runs ended with \texttt{budget\_exhausted}. Their charged usage exceeded 5,000 because model-call admission is checked before each call and final usage is recorded after the provider responds. Held-out label counts do not establish accuracy.
 
@@ -371,7 +371,7 @@ I improved the prompt and run limits after reviewing development results and rea
 \node[note, text width=3cm, anchor=west] at (4,-7.65) {\textbf{Trace evidence:} model call (23) $\rightarrow$ \texttt{read\_file} (26) $\rightarrow$ tool result / observation (27--28) $\rightarrow$ final model call (29) $\rightarrow$ validation (32) $\rightarrow$ report settlement (33).};
 \end{tikzpicture}
 \end{center}
-\noindent\textbf{Figure C2.} Trace-derived decision loop for one successful OWASP alert. The controller routes the model's bounded file-read proposal through the dispatcher; the returned observation changes the next decision, which submits a validated label-0 report row.\\ Source: updated OWASP full-run \texttt{trace(7).jsonl}, steps 23--33.
+\noindent\textbf{Figure C2.} Trace-derived decision loop for one successful OWASP alert. The controller routes the model's bounded file-read proposal through the dispatcher; the returned observation changes the next decision, which submits a validated label-0 report row.\\ Source: \texttt{results/owasp-full/trace.jsonl}, steps 23--33.
 
 \clearpage
 \subsection*{C3. Limitations and alternatives}
@@ -381,5 +381,8 @@ The HW1 agent lets the model choose the next allowed tool call after each observ
 
 \paragraph{HW1 agent versus supervisor/worker:}
 The HW1 agent uses one model and the same three bounded investigation tools for every alert. A supervisor/worker design would add a supervisor that routes the alert to a specialist worker and then receives that worker's result. This can help when different alert types need genuinely different expertise, but it adds a routing call and a worker call, increasing cost and latency. It also requires clear rules for what context passes to each worker and who owns the returned result. A bad routing decision can send an alert to the wrong worker without being noticed. Because the HW1 agent uses the same tools for every alert, separate specialist workers would add overhead without a clear benefit.
+
+\section*{Contribution statement}
+Amit Bal (UNI: \texttt{asb2332}) completed all design, implementation, evaluation, and report work for this individual submission.
 
 \end{document}

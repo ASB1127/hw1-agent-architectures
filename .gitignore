@@ -8,3 +8,5 @@ __pycache__/
 *.pyc
 questions.md
 runs/
+graphs/
+runs/validate_results.py

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.22)  16 OCT 2026 22:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.22)  17 OCT 2026 16:20
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -482,8 +482,12 @@ File: tikzlibrarybackgrounds.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 \pgf@layerbox@background=\box71
 \pgf@layerboxsaved@background=\box72
 )
+(/usr/local/texlive/2026/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip17
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 1
-4.
+7.
 
 (/Users/amitbal/Library/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
@@ -495,20 +499,20 @@ File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 (./report.aux)
 \openout1 = `report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -567,84 +571,95 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 1
-5.
+8.
 
 (/Users/amitbal/Library/texmf/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-15.
+18.
 
 (/Users/amitbal/Library/texmf/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-15.
+18.
 
 (/Users/amitbal/Library/texmf/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 15.
+(Font)              <12> on input line 18.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 15.
+(Font)              <8> on input line 18.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 15.
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 3
-8.
-
-(/Users/amitbal/Library/texmf/tex/latex/lm/ts1lmr.fd
-File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
+(Font)              <6> on input line 18.
 LaTeX Font Info:    Trying to load font information for OT1+lmtt on input line 
-41.
+18.
 
 (/Users/amitbal/Library/texmf/tex/latex/lm/ot1lmtt.fd
 File: ot1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 4
+2.
+
+(/Users/amitbal/Library/texmf/tex/latex/lm/ts1lmr.fd
+File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [1
 
 {/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/Users/a
 mitbal/Library/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/Users/amitbal/Library/texmf
-/fonts/enc/dvips/lm/lm-ts1.enc}{/Users/amitbal/Library/texmf/fonts/enc/dvips/lm
-/lm-rmtt.enc}]
-[2]
-LaTeX Font Info:    Calculating math sizes for size <15> on input line 107.
+/fonts/enc/dvips/lm/lm-rmtt.enc}{/Users/amitbal/Library/texmf/fonts/enc/dvips/l
+m/lm-ts1.enc}] [2]
+LaTeX Font Info:    Calculating math sizes for size <15> on input line 111.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <15> on input line 107.
+(Font)              <15> on input line 111.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.49995> on input line 107.
+(Font)              <10.49995> on input line 111.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7.5> on input line 107.
- [3
+(Font)              <7.5> on input line 111.
+
+[3
 
 
-{/Users/amitbal/Library/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}] [4
+{/Users/amitbal/Library/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10.95> on input line 122.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 140.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 140.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 140.
+ [4
 
+
+] [5
 
 
 ]
-[5] [6
+[6] [7
 
-] [7
+]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <9> on input line 234.
 
-] [8
+Overfull \hbox (8.74684pt too wide) in paragraph at lines 253--254
+\OT1/lmtt/m/n/10 error\OT1/lmr/m/n/10 , while the whole-run ter-mi-nal sta-tuse
+s recorded in the fi-nal trace event are \OT1/lmtt/m/n/10 complete\OT1/lmr/m/n/
+10 , \OT1/lmtt/m/n/10 budget[]exhausted\OT1/lmr/m/n/10 ,
+ []
+
+[8
 
 ] [9
 
-] [10]
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 257.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 257.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 257.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 273.
- [11
+] [10
 
 {/Users/amitbal/Library/texmf/fonts/enc/dvips/lm/lm-mathit.enc}]
+[11]
 LaTeX Font Info:    Font shape `OT1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `OT1/lmtt/b/n' tried instead on input line 306.
+(Font)              Font shape `OT1/lmtt/b/n' tried instead on input line 355.
  [12
 
 ] [13
@@ -656,29 +671,32 @@ L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 13572 strings out of 467525
- 284033 string characters out of 5418982
- 682491 words of memory out of 5000000
- 42220 multiletter control sequences out of 15000+600000
- 715609 words of font info for 93 fonts, out of 8000000 for 9000
+ 13670 strings out of 467525
+ 285378 string characters out of 5418982
+ 683310 words of memory out of 5000000
+ 42308 multiletter control sequences out of 15000+600000
+ 723145 words of font info for 100 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,8n,104p,846b,816s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,9n,104p,1053b,816s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </Users/amitbal/Library/texmf/fonts/type1/public/lm/lmbx10.pfb></Users/amitba
 l/Library/texmf/fonts/type1/public/lm/lmbx12.pfb></Users/amitbal/Library/texmf/
 fonts/type1/public/lm/lmbx8.pfb></Users/amitbal/Library/texmf/fonts/type1/publi
-c/lm/lmmi10.pfb></Users/amitbal/Library/texmf/fonts/type1/public/lm/lmr10.pfb><
-/Users/amitbal/Library/texmf/fonts/type1/public/lm/lmr12.pfb></Users/amitbal/Li
-brary/texmf/fonts/type1/public/lm/lmr17.pfb></Users/amitbal/Library/texmf/fonts
-/type1/public/lm/lmr8.pfb></Users/amitbal/Library/texmf/fonts/type1/public/lm/l
-mri10.pfb></Users/amitbal/Library/texmf/fonts/type1/public/lm/lmsy10.pfb></User
-s/amitbal/Library/texmf/fonts/type1/public/lm/lmsy8.pfb></Users/amitbal/Library
-/texmf/fonts/type1/public/lm/lmtk10.pfb></Users/amitbal/Library/texmf/fonts/typ
-e1/public/lm/lmtt10.pfb></Users/amitbal/Library/texmf/fonts/type1/public/lm/lmt
-t8.pfb>
-Output written on report.pdf (13 pages, 340509 bytes).
+c/lm/lmbx9.pfb></Users/amitbal/Library/texmf/fonts/type1/public/lm/lmmi10.pfb><
+/Users/amitbal/Library/texmf/fonts/type1/public/lm/lmr10.pfb></Users/amitbal/Li
+brary/texmf/fonts/type1/public/lm/lmr12.pfb></Users/amitbal/Library/texmf/fonts
+/type1/public/lm/lmr17.pfb></Users/amitbal/Library/texmf/fonts/type1/public/lm/
+lmr8.pfb></Users/amitbal/Library/texmf/fonts/type1/public/lm/lmr9.pfb></Users/a
+mitbal/Library/texmf/fonts/type1/public/lm/lmri10.pfb></Users/amitbal/Library/t
+exmf/fonts/type1/public/lm/lmsy10.pfb></Users/amitbal/Library/texmf/fonts/type1
+/public/lm/lmsy8.pfb></Users/amitbal/Library/texmf/fonts/type1/public/lm/lmtk10
+.pfb></Users/amitbal/Library/texmf/fonts/type1/public/lm/lmtt10.pfb></Users/ami
+tbal/Library/texmf/fonts/type1/public/lm/lmtt12.pfb></Users/amitbal/Library/tex
+mf/fonts/type1/public/lm/lmtt8.pfb></Users/amitbal/Library/texmf/fonts/type1/pu
+blic/lm/lmtt9.pfb>
+Output written on report.pdf (13 pages, 437642 bytes).
 PDF statistics:
- 128 PDF objects out of 1000 (max. 8388607)
- 83 compressed objects within 1 object stream
+ 148 PDF objects out of 1000 (max. 8388607)
+ 95 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 
