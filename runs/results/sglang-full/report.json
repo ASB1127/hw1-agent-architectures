@@ -1,6 +1,6 @@
 {
   "target": {
-    "input": "targets/sglang",
+    "input": "/Users/amitbal/DesignAgenticCoding/hw/hw1-agent-architectures/targets/sglang",
     "commit": "bbe9c7eeb520b0a67e92d133dfc137a3688dc7f2"
   },
   "scan": {
@@ -9,8 +9,8 @@
     "alert_count": 21
   },
   "budget": {
-    "max_tokens": 200000,
-    "used_tokens": 24210,
+    "max_tokens": 400000,
+    "used_tokens": 147155,
     "exhausted": false
   },
   "alerts": [
@@ -21,10 +21,26 @@
       "line": 532,
       "severity": "MEDIUM",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "model reply is not one JSON object",
-      "evidence": []
+      "label": 0,
+      "status": "classified",
+      "rationale": "The flagged pickle.loads only deserializes bytes received over torch.distributed from another rank in the same process group, and the matching sender in this file serializes objects with pickle.dumps before sending. The source rank is constrained to a valid member of self.ranks/self.cpu_group, so this is internal cluster communication rather than attacker-controlled input reaching pickle.loads.",
+      "evidence": [
+        {
+          "path": "python/sglang/multimodal_gen/runtime/distributed/group_coordinator.py",
+          "start_line": 473,
+          "end_line": 485
+        },
+        {
+          "path": "python/sglang/multimodal_gen/runtime/distributed/group_coordinator.py",
+          "start_line": 500,
+          "end_line": 532
+        },
+        {
+          "path": "python/sglang/multimodal_gen/runtime/distributed/group_coordinator.py",
+          "start_line": 671,
+          "end_line": 675
+        }
+      ]
     },
     {
       "alert_id": "utils-116-B301-5c20fb0b0447",
@@ -33,10 +49,26 @@
       "line": 116,
       "severity": "MEDIUM",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "",
-      "evidence": []
+      "label": 0,
+      "status": "classified",
+      "rationale": "The pickle deserialization occurs only on bytes previously written by peer processes in the same internally created torch.distributed TCPStore. In this code path, recv_obj reads keys of the form send_to/<rank>/<counter>, and the only adjacent writer is send_obj, which stores pickle.dumps(obj) to the same store. The store is created by StatelessProcessGroup.create for inter-process metadata exchange among ranks, with no attacker-controlled input flowing into pickle.loads in the inspected code.",
+      "evidence": [
+        {
+          "path": "python/sglang/multimodal_gen/runtime/distributed/utils.py",
+          "start_line": 68,
+          "end_line": 89
+        },
+        {
+          "path": "python/sglang/multimodal_gen/runtime/distributed/utils.py",
+          "start_line": 95,
+          "end_line": 119
+        },
+        {
+          "path": "python/sglang/multimodal_gen/runtime/distributed/utils.py",
+          "start_line": 157,
+          "end_line": 192
+        }
+      ]
     },
     {
       "alert_id": "utils-136-B301-044fa185dd59",
@@ -45,10 +77,36 @@
       "line": 136,
       "severity": "MEDIUM",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "",
-      "evidence": []
+      "label": 0,
+      "status": "classified",
+      "rationale": "The flagged pickle.loads only deserializes values previously written by peer processes in the same distributed job via the same StatelessProcessGroup methods using pickle.dumps. The broadcast path reads from a torch distributed Store under internal keys and is used for framework-generated metadata such as NCCL unique IDs and shared-memory names, not attacker-controlled external input.",
+      "evidence": [
+        {
+          "path": "python/sglang/multimodal_gen/runtime/distributed/utils.py",
+          "start_line": 69,
+          "end_line": 76
+        },
+        {
+          "path": "python/sglang/multimodal_gen/runtime/distributed/utils.py",
+          "start_line": 95,
+          "end_line": 100
+        },
+        {
+          "path": "python/sglang/multimodal_gen/runtime/distributed/utils.py",
+          "start_line": 122,
+          "end_line": 137
+        },
+        {
+          "path": "python/sglang/multimodal_gen/runtime/distributed/device_communicators/pynccl.py",
+          "start_line": 93,
+          "end_line": 95
+        },
+        {
+          "path": "python/sglang/multimodal_gen/runtime/distributed/parallel_state.py",
+          "start_line": 741,
+          "end_line": 756
+        }
+      ]
     },
     {
       "alert_id": "component_loader-270-B615-da43bebebf42",
@@ -57,10 +115,26 @@
       "line": 270,
       "severity": "MEDIUM",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "",
-      "evidence": []
+      "label": 0,
+      "status": "classified",
+      "rationale": "The flagged from_pretrained call does not download an attacker-supplied arbitrary Hub reference directly. Its argument is a local component subdirectory derived from a previously resolved model path: the pipeline first normalizes self.model_path via maybe_download_model(), then builds component_model_path with os.path.join(self.model_path, load_module_name) before passing it to AutoImageProcessor.from_pretrained(). This means the flagged call operates on the already downloaded/local model directory rather than performing an unpinned Hub fetch itself.",
+      "evidence": [
+        {
+          "path": "python/sglang/multimodal_gen/runtime/loader/component_loaders/component_loader.py",
+          "start_line": 267,
+          "end_line": 270
+        },
+        {
+          "path": "python/sglang/multimodal_gen/runtime/pipelines_core/composed_pipeline_base.py",
+          "start_line": 128,
+          "end_line": 131
+        },
+        {
+          "path": "python/sglang/multimodal_gen/runtime/pipelines_core/composed_pipeline_base.py",
+          "start_line": 299,
+          "end_line": 304
+        }
+      ]
     },
     {
       "alert_id": "component_loader-282-B615-fdcb8838723e",
@@ -69,10 +143,26 @@
       "line": 282,
       "severity": "MEDIUM",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "",
-      "evidence": []
+      "label": 1,
+      "status": "classified",
+      "rationale": "The flagged AutoProcessor.from_pretrained(component_model_path) receives component_model_path derived from configurable model paths, and when a path is not local the code downloads from Hugging Face via snapshot_download(repo_id=model_name_or_path) without any revision argument or allowlist. The adjacent logic verifies completeness only, not pinning or trusted revisions, so an unpinned remote model can be fetched and loaded.",
+      "evidence": [
+        {
+          "path": "python/sglang/multimodal_gen/runtime/loader/component_loaders/component_loader.py",
+          "start_line": 279,
+          "end_line": 282
+        },
+        {
+          "path": "python/sglang/multimodal_gen/runtime/pipelines_core/composed_pipeline_base.py",
+          "start_line": 290,
+          "end_line": 300
+        },
+        {
+          "path": "python/sglang/multimodal_gen/runtime/utils/hf_diffusers_utils.py",
+          "start_line": 696,
+          "end_line": 705
+        }
+      ]
     },
     {
       "alert_id": "component_loader-294-B615-59d3b87f8d53",

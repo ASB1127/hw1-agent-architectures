@@ -1,6 +1,6 @@
 {
   "target": {
-    "input": "targets/BenchmarkPython",
+    "input": "/Users/amitbal/DesignAgenticCoding/hw/hw1-agent-architectures/targets/BenchmarkPython",
     "commit": "f1291485808b66e20ddb6b01b10dc71b3df8c8ba"
   },
   "scan": {
@@ -9,8 +9,8 @@
     "alert_count": 18
   },
   "budget": {
-    "max_tokens": 200000,
-    "used_tokens": 61257,
+    "max_tokens": 400000,
+    "used_tokens": 65032,
     "exhausted": false
   },
   "alerts": [
@@ -23,11 +23,11 @@
       "confidence": "LOW",
       "label": 0,
       "status": "classified",
-      "rationale": "Code uses proper parameterized queries with ? placeholder and passes user input (bar,) separately to execute(). This is the secure pattern that prevents SQL injection - Bandit alert is false positive.",
+      "rationale": "Although the cookie value is attacker-controlled and reaches the query parameter `bar`, the SQL text is fixed and execution uses a parameterized SQLite call `cur.execute(sql, (bar,))` with a placeholder `?`, so the input is not concatenated into SQL code.",
       "evidence": [
         {
           "path": "testcode/BenchmarkTest00011.py",
-          "start_line": 47,
+          "start_line": 38,
           "end_line": 52
         }
       ]
@@ -39,10 +39,16 @@
       "line": 48,
       "severity": "MEDIUM",
       "confidence": "LOW",
-      "label": null,
-      "status": "error",
-      "rationale": "model reply is not one JSON object",
-      "evidence": []
+      "label": 0,
+      "status": "classified",
+      "rationale": "Although `bar` is derived from a cookie value, the SQL statement is a fixed string with a `?` placeholder, and the attacker-controlled value is passed separately as a bound parameter via `cur.execute(sql, (bar,))`. The user input is not concatenated into the SQL query text, so this is not a real SQL injection issue.",
+      "evidence": [
+        {
+          "path": "testcode/BenchmarkTest00012.py",
+          "start_line": 38,
+          "end_line": 54
+        }
+      ]
     },
     {
       "alert_id": "BenchmarkTest00013-55-B314-1ef3e5572d88",
@@ -51,10 +57,16 @@
       "line": 55,
       "severity": "MEDIUM",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "model reply is not one JSON object",
-      "evidence": []
+      "label": 0,
+      "status": "classified",
+      "rationale": "The flagged call parses a fixed, repository-controlled XML file path, not attacker-controlled XML input. `ET.parse` is called only on `f'{helpers.utils.RES_DIR}/employees.xml'`, while user input from the cookie flows into the XPath query string instead. This means the B314 XML-parser alert is not a real issue at this call site.",
+      "evidence": [
+        {
+          "path": "testcode/BenchmarkTest00013.py",
+          "start_line": 33,
+          "end_line": 56
+        }
+      ]
     },
     {
       "alert_id": "BenchmarkTest00014-56-B314-5aee2aba9c8f",
@@ -63,10 +75,16 @@
       "line": 56,
       "severity": "MEDIUM",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "",
-      "evidence": []
+      "label": 0,
+      "status": "classified",
+      "rationale": "The flagged ET.parse call reads a fixed local resource file, not attacker-controlled XML. The only user-influenced value is the cookie-derived `bar`, which is used later to build an XPath query; the parse operation itself always loads `f'{helpers.utils.RES_DIR}/employees.xml'`. This alert is therefore not a real unsafe-XML parsing issue at the flagged sink.",
+      "evidence": [
+        {
+          "path": "testcode/BenchmarkTest00014.py",
+          "start_line": 31,
+          "end_line": 57
+        }
+      ]
     },
     {
       "alert_id": "BenchmarkTest00015-56-B314-17ff7efbd6a2",
@@ -75,10 +93,16 @@
       "line": 56,
       "severity": "MEDIUM",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "",
-      "evidence": []
+      "label": 0,
+      "status": "classified",
+      "rationale": "The flagged ET.parse call reads a fixed local resource path, not attacker-controlled XML. The only user-controlled value is the cookie-derived `bar`, which is used later to build an XPath query; `ET.parse` always parses `helpers.utils.RES_DIR/employees.xml`. Since the XML source for the flagged parser is not untrusted input, this B314 finding is not a real issue here.",
+      "evidence": [
+        {
+          "path": "testcode/BenchmarkTest00015.py",
+          "start_line": 31,
+          "end_line": 57
+        }
+      ]
     },
     {
       "alert_id": "BenchmarkTest00016-58-B314-2da372846e3e",
@@ -87,10 +111,21 @@
       "line": 58,
       "severity": "MEDIUM",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "",
-      "evidence": []
+      "label": 0,
+      "status": "classified",
+      "rationale": "The flagged ET.parse call reads a fixed local resource path, not attacker-controlled XML. The only user-controlled value is the cookie-derived `bar`, which is used to build an XPath query after an apostrophe check; it does not affect the XML source passed to `ET.parse`. Since B314 concerns parsing untrusted XML data, the inspected code does not show attacker-controlled XML reaching the parser.",
+      "evidence": [
+        {
+          "path": "testcode/BenchmarkTest00016.py",
+          "start_line": 33,
+          "end_line": 58
+        },
+        {
+          "path": "testcode/BenchmarkTest00016.py",
+          "start_line": 44,
+          "end_line": 45
+        }
+      ]
     },
     {
       "alert_id": "BenchmarkTest00017-49-B317-57922266a6ec",
@@ -99,10 +134,21 @@
       "line": 49,
       "severity": "MEDIUM",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "",
-      "evidence": []
+      "label": 1,
+      "status": "classified",
+      "rationale": "The POST route reads XML from a user-controlled cookie into `param`, assigns it to `bar`, creates a SAX parser with `xml.sax.make_parser()`, and passes that parser to `xml.dom.minidom.parseString(bar, parser)` without any parser hardening such as `setFeature(...)` or `defuse_stdlib()`. The nearby comment claiming features are disabled by default is not an actual guard.",
+      "evidence": [
+        {
+          "path": "testcode/BenchmarkTest00017.py",
+          "start_line": 31,
+          "end_line": 38
+        },
+        {
+          "path": "testcode/BenchmarkTest00017.py",
+          "start_line": 44,
+          "end_line": 50
+        }
+      ]
     },
     {
       "alert_id": "BenchmarkTest00017-52-B318-f04e24aff15b",
@@ -111,10 +157,21 @@
       "line": 52,
       "severity": "MEDIUM",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "",
-      "evidence": []
+      "label": 0,
+      "status": "classified",
+      "rationale": "The flagged parseString call parses XML taken from a request cookie, but the code constructs and passes an explicit SAX parser and comments that all features are disabled by default. There is no code enabling external entities, DTD loading, or network access before parsing, so the inspected parser configuration does not show an exploitable XML attack surface here.",
+      "evidence": [
+        {
+          "path": "testcode/BenchmarkTest00017.py",
+          "start_line": 31,
+          "end_line": 44
+        },
+        {
+          "path": "testcode/BenchmarkTest00017.py",
+          "start_line": 46,
+          "end_line": 52
+        }
+      ]
     },
     {
       "alert_id": "BenchmarkTest00054-64-B324-bceb8a01c722",
@@ -123,10 +180,26 @@
       "line": 64,
       "severity": "HIGH",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "",
-      "evidence": []
+      "label": 1,
+      "status": "classified",
+      "rationale": "The code computes an MD5 hash over a sensitive value derived from the BenchmarkTest00054 cookie and stores the resulting hash in a password file. This is a security-related hashing use, not a non-security checksum or cache key, so Bandit's weak-hash finding is valid.",
+      "evidence": [
+        {
+          "path": "testcode/BenchmarkTest00054.py",
+          "start_line": 20,
+          "end_line": 27
+        },
+        {
+          "path": "testcode/BenchmarkTest00054.py",
+          "start_line": 31,
+          "end_line": 35
+        },
+        {
+          "path": "testcode/BenchmarkTest00054.py",
+          "start_line": 47,
+          "end_line": 57
+        }
+      ]
     },
     {
       "alert_id": "BenchmarkTest00057-65-B324-15d57c1b155b",
@@ -135,10 +208,16 @@
       "line": 65,
       "severity": "HIGH",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "",
-      "evidence": []
+      "label": 1,
+      "status": "classified",
+      "rationale": "The code computes an MD5 digest of input and stores it in `passwordFile.txt` while describing the value as a \"Sensitive value\". This is a security-related hashing use, not a checksum or cache key, and there is no indication of `usedforsecurity=False` or another non-security context.",
+      "evidence": [
+        {
+          "path": "testcode/BenchmarkTest00057.py",
+          "start_line": 51,
+          "end_line": 76
+        }
+      ]
     },
     {
       "alert_id": "BenchmarkTest00058-65-B324-07e016baa9ae",
@@ -147,10 +226,26 @@
       "line": 65,
       "severity": "HIGH",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "",
-      "evidence": []
+      "label": 1,
+      "status": "classified",
+      "rationale": "The code uses `hashlib.sha1()` to hash a value that is explicitly described as a sensitive value and then stores the resulting hash in `passwordFile.txt`. Although user-controlled cookie input is discarded and replaced with the constant `'a_Value'`, attacker control is not required for weak-crypto findings; this is a security-related hashing/storage use of SHA-1.",
+      "evidence": [
+        {
+          "path": "testcode/BenchmarkTest00058.py",
+          "start_line": 39,
+          "end_line": 39
+        },
+        {
+          "path": "testcode/BenchmarkTest00058.py",
+          "start_line": 44,
+          "end_line": 44
+        },
+        {
+          "path": "testcode/BenchmarkTest00058.py",
+          "start_line": 64,
+          "end_line": 71
+        }
+      ]
     },
     {
       "alert_id": "BenchmarkTest00059-63-B324-af92292ff7e0",
@@ -159,10 +254,21 @@
       "line": 63,
       "severity": "HIGH",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "",
-      "evidence": []
+      "label": 1,
+      "status": "classified",
+      "rationale": "The POST handler hashes a sensitive value and stores it using SHA-1. The input comes from a cookie value and the response explicitly says the value was \"hashed and stored,\" which is a security-related use rather than a checksum or cache key. There is no `usedforsecurity=False` or stronger primitive used.",
+      "evidence": [
+        {
+          "path": "testcode/BenchmarkTest00059.py",
+          "start_line": 31,
+          "end_line": 61
+        },
+        {
+          "path": "testcode/BenchmarkTest00059.py",
+          "start_line": 63,
+          "end_line": 69
+        }
+      ]
     },
     {
       "alert_id": "BenchmarkTest00060-60-B324-4830131d003b",
@@ -171,10 +277,21 @@
       "line": 60,
       "severity": "HIGH",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "",
-      "evidence": []
+      "label": 1,
+      "status": "classified",
+      "rationale": "The code uses `hashlib.sha1()` to hash a value described and handled as sensitive (`someSecret` cookie; response says \"Sensitive value ... hashed and stored\") before writing it to `passwordFile.txt`. This is a security-related hashing use, not a non-security checksum/cache use, and there is no `usedforsecurity=False` or stronger primitive.",
+      "evidence": [
+        {
+          "path": "testcode/BenchmarkTest00060.py",
+          "start_line": 20,
+          "end_line": 29
+        },
+        {
+          "path": "testcode/BenchmarkTest00060.py",
+          "start_line": 33,
+          "end_line": 58
+        }
+      ]
     },
     {
       "alert_id": "BenchmarkTest00073-54-B307-8ba554f115be",
@@ -183,10 +300,16 @@
       "line": 54,
       "severity": "MEDIUM",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "",
-      "evidence": []
+      "label": 0,
+      "status": "classified",
+      "rationale": "The flagged eval() is only reached after validating that `bar` is a plain single-quoted string literal: it must start and end with `'` and contain no interior single quotes. Since `bar` is derived from the cookie but constrained to a quoted literal before eval, attacker input cannot inject code beyond producing a string value.",
+      "evidence": [
+        {
+          "path": "testcode/BenchmarkTest00073.py",
+          "start_line": 33,
+          "end_line": 55
+        }
+      ]
     },
     {
       "alert_id": "BenchmarkTest00074-51-B102-166a67d69624",
@@ -195,10 +318,21 @@
       "line": 51,
       "severity": "MEDIUM",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "",
-      "evidence": []
+      "label": 1,
+      "status": "classified",
+      "rationale": "The POST handler reads the value of cookie `BenchmarkTest00074` from the HTTP request, URL-decodes it into `param`, copies it into `bar` via a ConfigParser round-trip, and then executes `exec(bar)` with no validation or restriction. This is direct attacker-controlled code execution.",
+      "evidence": [
+        {
+          "path": "testcode/BenchmarkTest00074.py",
+          "start_line": 29,
+          "end_line": 39
+        },
+        {
+          "path": "testcode/BenchmarkTest00074.py",
+          "start_line": 41,
+          "end_line": 43
+        }
+      ]
     },
     {
       "alert_id": "BenchmarkTest00075-53-B102-605e820d12a4",
@@ -207,10 +341,21 @@
       "line": 53,
       "severity": "MEDIUM",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "",
-      "evidence": []
+      "label": 1,
+      "status": "classified",
+      "rationale": "The POST handler takes a cookie value from the request, decodes it, and passes it through `thing.doSomething(param)` into `bar`, which is then executed with `exec(bar)`. The only guard requires `bar` to be a single-quoted string literal, but `exec` still executes attacker-influenced Python code represented by `bar`, so attacker-controlled input reaches the dangerous operation without a safe API replacing it.",
+      "evidence": [
+        {
+          "path": "testcode/BenchmarkTest00075.py",
+          "start_line": 31,
+          "end_line": 40
+        },
+        {
+          "path": "testcode/BenchmarkTest00075.py",
+          "start_line": 42,
+          "end_line": 53
+        }
+      ]
     },
     {
       "alert_id": "BenchmarkTest00078-53-B301-d8ffd7fc3af4",
@@ -219,10 +364,16 @@
       "line": 53,
       "severity": "MEDIUM",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "",
-      "evidence": []
+      "label": 1,
+      "status": "classified",
+      "rationale": "The POST handler reads the `BenchmarkTest00078` cookie directly from `request.cookies`, performs only reversible string concatenation/slicing, base64-decodes it, and passes the result to `pickle.loads`. There is no validation, allowlist, or safe deserialization guard before unpickling attacker-controlled data.",
+      "evidence": [
+        {
+          "path": "testcode/BenchmarkTest00078.py",
+          "start_line": 29,
+          "end_line": 53
+        }
+      ]
     },
     {
       "alert_id": "BenchmarkTest00099-46-B608-fa8e8e39d8d9",
@@ -231,10 +382,26 @@
       "line": 46,
       "severity": "MEDIUM",
       "confidence": "LOW",
-      "label": null,
-      "status": "error",
-      "rationale": "",
-      "evidence": []
+      "label": 1,
+      "status": "classified",
+      "rationale": "The route reads attacker-controlled POST data from request.form into `param`, copies it to `bar` via ConfigParser without validation or parameterization, and then interpolates `bar` directly into an SQL query string executed with `cur.execute(sql)`. This is a real SQL injection path.",
+      "evidence": [
+        {
+          "path": "testcode/BenchmarkTest00099.py",
+          "start_line": 24,
+          "end_line": 25
+        },
+        {
+          "path": "testcode/BenchmarkTest00099.py",
+          "start_line": 33,
+          "end_line": 40
+        },
+        {
+          "path": "testcode/BenchmarkTest00099.py",
+          "start_line": 42,
+          "end_line": 47
+        }
+      ]
     }
   ]
 }

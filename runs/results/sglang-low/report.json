@@ -1,6 +1,6 @@
 {
   "target": {
-    "input": "targets/sglang",
+    "input": "/Users/amitbal/DesignAgenticCoding/hw/hw1-agent-architectures/targets/sglang",
     "commit": "bbe9c7eeb520b0a67e92d133dfc137a3688dc7f2"
   },
   "scan": {
@@ -10,7 +10,7 @@
   },
   "budget": {
     "max_tokens": 5000,
-    "used_tokens": 5060,
+    "used_tokens": 5311,
     "exhausted": true
   },
   "alerts": [
@@ -22,8 +22,8 @@
       "severity": "MEDIUM",
       "confidence": "HIGH",
       "label": null,
-      "status": "error",
-      "rationale": "model reply is not one JSON object",
+      "status": "budget_exhausted",
+      "rationale": "",
       "evidence": []
     },
     {

@@ -1,6 +1,6 @@
 {
   "target": {
-    "input": "targets/Radicale",
+    "input": "/Users/amitbal/DesignAgenticCoding/hw/hw1-agent-architectures/targets/Radicale",
     "commit": "eff8027f3dc4910be1659ee71f4b4a454ade5a8c"
   },
   "scan": {
@@ -9,8 +9,8 @@
     "alert_count": 10
   },
   "budget": {
-    "max_tokens": 200000,
-    "used_tokens": 50254,
+    "max_tokens": 400000,
+    "used_tokens": 131800,
     "exhausted": false
   },
   "alerts": [
@@ -23,12 +23,17 @@
       "confidence": "LOW",
       "label": 0,
       "status": "classified",
-      "rationale": "The requests.post() call uses a configuration-based endpoint (not per-request attacker input) and is part of standard OAuth2 credential validation flow; Bandit's LOW confidence reflects that missing timeout on well-behaved upstream servers isn't directly exploitable through user-controlled inputs in this context.",
+      "rationale": "The flagged call is a server-side POST to a configured OAuth2 token endpoint (`self._endpoint` comes from configuration, not attacker input). Missing a timeout may affect availability, but the inspected code does not show attacker-controlled input reaching a dangerous operation in a way that constitutes a real security vulnerability under this policy.",
       "evidence": [
         {
           "path": "radicale/auth/oauth2.py",
-          "start_line": 38,
-          "end_line": 41
+          "start_line": 32,
+          "end_line": 37
+        },
+        {
+          "path": "radicale/auth/oauth2.py",
+          "start_line": 40,
+          "end_line": 67
         }
       ]
     },
@@ -39,10 +44,21 @@
       "line": 227,
       "severity": "HIGH",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "model reply is not one JSON object",
-      "evidence": []
+      "label": 0,
+      "status": "classified",
+      "rationale": "The flagged SHA-1 is used only to compare two locally constructed dictionaries of event metadata for equality. The code hashes selected event fields and immediately checks whether the digests differ; it is not used to protect, authenticate, verify, or store a security-sensitive value.",
+      "evidence": [
+        {
+          "path": "radicale/hook/email/__init__.py",
+          "start_line": 217,
+          "end_line": 227
+        },
+        {
+          "path": "radicale/hook/email/__init__.py",
+          "start_line": 229,
+          "end_line": 249
+        }
+      ]
     },
     {
       "alert_id": "files-131-B301-d7e275a8300f",
@@ -51,10 +67,31 @@
       "line": 131,
       "severity": "MEDIUM",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "model reply is not one JSON object",
-      "evidence": []
+      "label": 0,
+      "status": "classified",
+      "rationale": "The pickle load reads a local share-config file whose path is derived from an application-managed database directory plus a URL-encoded PathOrToken, preventing path traversal outside that directory. The same file format is written by this module itself with pickle.dump, so the flagged load is consuming its own internal storage rather than attacker-supplied serialized data.",
+      "evidence": [
+        {
+          "path": "radicale/sharing/files.py",
+          "start_line": 87,
+          "end_line": 99
+        },
+        {
+          "path": "radicale/sharing/files.py",
+          "start_line": 125,
+          "end_line": 135
+        },
+        {
+          "path": "radicale/sharing/files.py",
+          "start_line": 250,
+          "end_line": 281
+        },
+        {
+          "path": "radicale/sharing/files.py",
+          "start_line": 389,
+          "end_line": 390
+        }
+      ]
     },
     {
       "alert_id": "files-208-B301-700c66e22252",
@@ -63,10 +100,26 @@
       "line": 208,
       "severity": "MEDIUM",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "model reply is not one JSON object",
-      "evidence": []
+      "label": 1,
+      "status": "classified",
+      "rationale": "The flagged pickle.load deserializes files from a configurable on-disk sharing database without validating file contents or restricting pickle types. In database_list_sharing it iterates every file returned by os.scandir(path) and directly unpickles it; in the same module these files are written with pickle.dump. Because the code trusts any file present in that directory, a malicious file placed there would trigger unsafe deserialization when listing shares.",
+      "evidence": [
+        {
+          "path": "radicale/sharing/files.py",
+          "start_line": 199,
+          "end_line": 208
+        },
+        {
+          "path": "radicale/sharing/files.py",
+          "start_line": 277,
+          "end_line": 281
+        },
+        {
+          "path": "radicale/sharing/files.py",
+          "start_line": 389,
+          "end_line": 390
+        }
+      ]
     },
     {
       "alert_id": "files-316-B301-61102b08b15c",
@@ -75,10 +128,26 @@
       "line": 316,
       "severity": "MEDIUM",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "model reply is not one JSON object",
-      "evidence": []
+      "label": 1,
+      "status": "classified",
+      "rationale": "The flagged pickle.load reads from a filesystem path derived from PathOrToken and deserializes it without validation. The same file is written with pickle.dump elsewhere, but there is no integrity check, signature, or safer format; if an attacker can modify files in the sharing database path, opening the file triggers unsafe deserialization.",
+      "evidence": [
+        {
+          "path": "radicale/sharing/files.py",
+          "start_line": 307,
+          "end_line": 316
+        },
+        {
+          "path": "radicale/sharing/files.py",
+          "start_line": 250,
+          "end_line": 280
+        },
+        {
+          "path": "radicale/sharing/files.py",
+          "start_line": 389,
+          "end_line": 390
+        }
+      ]
     },
     {
       "alert_id": "files-374-B301-6ea694686549",
@@ -87,10 +156,26 @@
       "line": 374,
       "severity": "MEDIUM",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "model reply is not one JSON object",
-      "evidence": []
+      "label": 1,
+      "status": "classified",
+      "rationale": "The flagged pickle.load deserializes data from a filesystem path derived from PathOrToken and a configured sharing database directory, with no validation, signature, or safe format check before unpickling. The same module writes these files via pickle.dump, but all read paths trust the on-disk file contents directly; if an attacker can place or modify a share-config file in that directory, arbitrary code execution on load is possible.",
+      "evidence": [
+        {
+          "path": "radicale/sharing/files.py",
+          "start_line": 126,
+          "end_line": 134
+        },
+        {
+          "path": "radicale/sharing/files.py",
+          "start_line": 248,
+          "end_line": 277
+        },
+        {
+          "path": "radicale/sharing/files.py",
+          "start_line": 366,
+          "end_line": 375
+        }
+      ]
     },
     {
       "alert_id": "cache-109-B301-005a18046420",
@@ -99,10 +184,31 @@
       "line": 109,
       "severity": "MEDIUM",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "model reply is not one JSON object",
-      "evidence": []
+      "label": 0,
+      "status": "classified",
+      "rationale": "The pickle file is not loaded from attacker-supplied input; `_load_item_cache` reads a cache entry from an internal `.Radicale.cache/item` path derived from the collection filesystem path and `href`, and the same module writes that file itself with `pickle.dump((cache_hash, *content), ...)`. The flagged deserialization is therefore of application-managed cache data, not untrusted external data reaching `pickle.load`.",
+      "evidence": [
+        {
+          "path": "radicale/storage/multifilesystem/cache.py",
+          "start_line": 92,
+          "end_line": 99
+        },
+        {
+          "path": "radicale/storage/multifilesystem/cache.py",
+          "start_line": 103,
+          "end_line": 121
+        },
+        {
+          "path": "radicale/storage/multifilesystem/base.py",
+          "start_line": 122,
+          "end_line": 129
+        },
+        {
+          "path": "radicale/storage/multifilesystem/get.py",
+          "start_line": 109,
+          "end_line": 120
+        }
+      ]
     },
     {
       "alert_id": "history-53-B301-fc6223a5c14e",
@@ -111,10 +217,31 @@
       "line": 53,
       "severity": "MEDIUM",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "",
-      "evidence": []
+      "label": 0,
+      "status": "classified",
+      "rationale": "The pickle file is read only from the server-managed history cache path, and the filename argument `href` reaching `os.path.join(history_folder, href)` comes from validated collection item names. Callers such as delete reject unsafe `href` values with `is_safe_filesystem_path_component`, so attacker-controlled arbitrary paths cannot reach `pickle.load`; this is internal cache deserialization, not untrusted user data.",
+      "evidence": [
+        {
+          "path": "radicale/storage/multifilesystem/history.py",
+          "start_line": 50,
+          "end_line": 53
+        },
+        {
+          "path": "radicale/storage/multifilesystem/base.py",
+          "start_line": 122,
+          "end_line": 128
+        },
+        {
+          "path": "radicale/storage/multifilesystem/delete.py",
+          "start_line": 47,
+          "end_line": 55
+        },
+        {
+          "path": "radicale/pathutils.py",
+          "start_line": 255,
+          "end_line": 266
+        }
+      ]
     },
     {
       "alert_id": "lock-102-B602-cddb87db82ee",
@@ -123,10 +250,36 @@
       "line": 102,
       "severity": "HIGH",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "",
-      "evidence": []
+      "label": 0,
+      "status": "classified",
+      "rationale": "The flagged shell=True call executes an administrator-configured storage hook from configuration, not attacker-supplied command text. The only request-derived values interpolated into the command are `path`, `to_path`, `request`, and `user`, and each is wrapped with `shlex.quote` before formatting into `self._hook`, which prevents shell metacharacter injection through those inputs.",
+      "evidence": [
+        {
+          "path": "radicale/storage/multifilesystem/lock.py",
+          "start_line": 57,
+          "end_line": 61
+        },
+        {
+          "path": "radicale/storage/multifilesystem/lock.py",
+          "start_line": 79,
+          "end_line": 94
+        },
+        {
+          "path": "radicale/storage/multifilesystem/lock.py",
+          "start_line": 97,
+          "end_line": 103
+        },
+        {
+          "path": "radicale/app/delete.py",
+          "start_line": 89,
+          "end_line": 89
+        },
+        {
+          "path": "radicale/app/move.py",
+          "start_line": 113,
+          "end_line": 113
+        }
+      ]
     },
     {
       "alert_id": "sync-79-B301-3cdb5b5189ae",
@@ -135,10 +288,26 @@
       "line": 79,
       "severity": "MEDIUM",
       "confidence": "HIGH",
-      "label": null,
-      "status": "error",
-      "rationale": "",
-      "evidence": []
+      "label": 0,
+      "status": "classified",
+      "rationale": "The pickle.load reads only server-managed sync-token cache files from a fixed cache directory, not arbitrary user-supplied paths. The filename comes from old_token, but old_token is strictly validated to match the fixed prefix and a 64-character lowercase hex SHA-256 token name before being joined into the path, preventing path traversal or arbitrary file selection. The same file format is written by adjacent code with pickle.dump(state, ...), indicating an internal cache, not deserialization of untrusted attacker-controlled data.",
+      "evidence": [
+        {
+          "path": "radicale/storage/multifilesystem/sync.py",
+          "start_line": 34,
+          "end_line": 54
+        },
+        {
+          "path": "radicale/storage/multifilesystem/sync.py",
+          "start_line": 68,
+          "end_line": 85
+        },
+        {
+          "path": "radicale/storage/multifilesystem/sync.py",
+          "start_line": 95,
+          "end_line": 101
+        }
+      ]
     }
   ]
 }

@@ -285,3 +285,23 @@ The assignment evaluates six runs:
 For each target, the grader replaces the `[scan]` block while preserving the other configuration settings.
 
 Every run must produce `report.json` and `trace.jsonl`. The Radicale low-budget run must demonstrate budget exhaustion.
+
+### Six-run helper
+
+`runs/run_six.py` generates a target-specific copy of each canonical config,
+places it beside that run's output, and refuses to overwrite preserved output
+unless `--force` is supplied.
+
+```bash
+# No model calls: verify all pinned targets, scan scopes, and alert counts.
+python runs/run_six.py --dry-run
+
+# Run all six cases. Outputs are saved in runs/evaluation/<target>-<budget>/.
+python runs/run_six.py
+
+# Run one case after inspecting its dry run.
+python runs/run_six.py --only radicale-low
+```
+
+Each completed output directory contains `report.json`, `trace.jsonl`, and the
+exact generated `config.toml` used for that target.

@@ -1,6 +1,6 @@
 {
   "target": {
-    "input": "targets/Radicale",
+    "input": "/Users/amitbal/DesignAgenticCoding/hw/hw1-agent-architectures/targets/Radicale",
     "commit": "eff8027f3dc4910be1659ee71f4b4a454ade5a8c"
   },
   "scan": {
@@ -10,7 +10,7 @@
   },
   "budget": {
     "max_tokens": 5000,
-    "used_tokens": 5873,
+    "used_tokens": 6345,
     "exhausted": true
   },
   "alerts": [
@@ -23,12 +23,17 @@
       "confidence": "LOW",
       "label": 0,
       "status": "classified",
-      "rationale": "The requests.post() call uses a configuration-based endpoint (not per-request attacker input) and is part of standard OAuth2 credential validation flow; Bandit's LOW confidence reflects that missing timeout on well-behaved upstream servers isn't directly exploitable through user-controlled inputs in this context.",
+      "rationale": "The flagged call is a server-side POST to a configured OAuth2 token endpoint (`self._endpoint`) using fixed form fields for authentication. While no timeout is set, the inspected code shows no attacker-controlled URL or other direct security impact beyond potential reliability/availability concerns, so this Bandit finding does not support a concrete security vulnerability here.",
       "evidence": [
         {
           "path": "radicale/auth/oauth2.py",
-          "start_line": 38,
-          "end_line": 41
+          "start_line": 32,
+          "end_line": 39
+        },
+        {
+          "path": "radicale/auth/oauth2.py",
+          "start_line": 41,
+          "end_line": 68
         }
       ]
     },

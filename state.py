@@ -9,8 +9,7 @@ class AgentState(TypedDict, total=False):
     node_visits: int
     next: Literal["tools", "submit"]
     status: str
-    classification: str
-    label: int
+    label: int | None
     rationale: str
     evidence: list[dict]
     observations: list[dict]

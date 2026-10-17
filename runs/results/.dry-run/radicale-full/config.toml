@@ -1,0 +1,14 @@
+[scan]
+paths = ["radicale"]
+exclude = ["radicale/tests"]
+min_severity = "MEDIUM"
+bandit_version = "1.9.4"
+
+[model]
+provider = "openai"
+name = "gpt-5.4"
+
+[budget]
+max_tokens = 400000
+output_allowance = 1024
+max_steps = 24
