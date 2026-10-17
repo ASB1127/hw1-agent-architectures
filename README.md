@@ -195,7 +195,7 @@ Using the default Radicale `[scan]` block:
 ```bash
 python main.py \
   --input targets/Radicale \
-  --output runs/results/radicale-full \
+  --output results/radicale-full \
   --config configs/full.toml
 ```
 

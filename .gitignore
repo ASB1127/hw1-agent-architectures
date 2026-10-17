@@ -9,4 +9,3 @@ __pycache__/
 questions.md
 runs/
 graphs/
-runs/validate_results.py
