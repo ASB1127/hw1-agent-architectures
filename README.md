@@ -204,7 +204,7 @@ python main.py \
 ```bash
 python main.py \
   --input targets/Radicale \
-  --output runs/results/radicale-low \
+  --output results/radicale-low \
   --config configs/low.toml
 ```
 
@@ -217,12 +217,12 @@ First, replace the `[scan]` block with the required SGLang block in both configu
 ```bash
 python main.py \
   --input targets/sglang \
-  --output runs/results/sglang-full \
+  --output results/sglang-full \
   --config configs/full.toml
 
 python main.py \
   --input targets/sglang \
-  --output runs/results/sglang-low \
+  --output results/sglang-low \
   --config configs/low.toml
 ```
 
@@ -233,12 +233,12 @@ First, replace the `[scan]` block with the required OWASP BenchmarkPython block 
 ```bash
 python main.py \
   --input targets/BenchmarkPython \
-  --output runs/results/owasp-full \
+  --output results/owasp-full \
   --config configs/full.toml
 
 python main.py \
   --input targets/BenchmarkPython \
-  --output runs/results/owasp-low \
+  --output results/owasp-low \
   --config configs/low.toml
 ```
 
