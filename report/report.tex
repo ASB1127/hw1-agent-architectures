@@ -11,16 +11,19 @@
 \author{}
 \date{}
 
+\setlength{\parindent}{0pt}
+
 \begin{document}
 \maketitle
 
 \section*{Part A: Design report}
 \subsection*{A1. Behavioural contract}
 
-\paragraph{Purpose and scope.}
+\noindent\textbf{Purpose and scope}\par\smallskip
 The agent classifies one Bandit alert at a time in a pinned Python checkout. It determines whether the reported pattern represents a real security issue, returning label 1 or 0 with code evidence when it can classify; otherwise it produces a controlled null-label error or cutoff row. Bandit discovery is separate from model investigation: Bandit discovers the in-scope MEDIUM+ alerts, while the model investigates each discovered alert using only approved read-only tools.
 
-\paragraph{Normal per-alert behaviour.}
+\vspace{6pt}
+\noindent\textbf{Normal per-alert behaviour}\par\smallskip
 \begin{enumerate}
   \item The runner discovers and sorts Bandit alerts.
   \item For one alert, it creates a disposable agent workspace.
@@ -33,7 +36,7 @@ The agent classifies one Bandit alert at a time in a pinned Python checkout. It 
 \end{enumerate}
 
 \medskip
-\noindent\textbf{Safety and observational integrity.}\par\smallskip
+\noindent\textbf{Safety and observational integrity}\par\smallskip
 \begin{itemize}
   \item The agent must never execute code from the target repository.
   \item The agent must never modify the target repository, including by writing, editing, patching, or deleting files.
@@ -43,7 +46,7 @@ The agent classifies one Bandit alert at a time in a pinned Python checkout. It 
 \end{itemize}
 The model proposes a tool request. The runtime/dispatcher validates and executes it. Only the dispatcher writes tool observations into the trace.
 
-\paragraph{Controlled outcomes.}
+\par\medskip\noindent\textbf{Controlled outcomes}\par\smallskip
 The system does not silently drop alerts. A malformed submission becomes an error row for that alert, and a denied tool request becomes a refusal observation rather than a crash. A budget cutoff, max-step cutoff, or no-progress stop ends the active run under runtime control. The runner still writes one row for every discovered alert.
 
 \clearpage
@@ -110,6 +113,53 @@ The system does not silently drop alerts. A malformed submission becomes an erro
 \end{landscape}
 
 \clearpage
+\subsection*{A3. Nodes and edges}
+The per-alert graph in Figure A2 has three working nodes. The runner initializes the alert state and invokes the graph; START and END are graph entry and exit markers rather than model-executing nodes. The model selects a requested action, but the runtime controls execution, validation, and all failsafe terminations.
+
+\medskip
+\begin{center}
+\begin{tabular}{@{}p{.16\textwidth}p{.76\textwidth}@{}}
+\toprule
+\textbf{Node} & \textbf{Responsibility} \\
+\midrule
+\textbf{Controller} & Checks node-visit and model-call admission limits, invokes the model when permitted, and interprets its response as either tool requests or a proposed final submission. \\
+\textbf{Tools} & Passes requested read-only operations through the runtime dispatcher, which validates arguments, executes allowed requests, and appends actual results as observations. It also checks for repeated identical observation results. \\
+\textbf{Submit} & Parses and validates the proposed JSON classification and evidence; produces a classified result on success or a controlled error result on invalid submission. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+\noindent\textbf{Edges and decision ownership.}
+\par\smallskip
+\begingroup
+\small
+\renewcommand{\arraystretch}{1.42}
+\setlength{\tabcolsep}{5pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.25\linewidth} >{\raggedright\arraybackslash}p{.23\linewidth} >{\raggedright\arraybackslash}p{.46\linewidth}@{}}
+\toprule
+\textbf{Transition} & \textbf{Type / owner} & \textbf{Condition or effect} \\
+\midrule
+START $\to$ Controller & Fixed · Runtime & Begin processing the alert. \\
+\addlinespace[3pt]
+Controller $\to$ Tools & Conditional · Model & Model requests investigation tools; runtime validates and dispatches them. \\
+\addlinespace[3pt]
+Controller $\to$ Submit & Conditional · Model & Model returns a final submission instead of a tool request. \\
+\addlinespace[3pt]
+Tools $\to$ Controller & Fixed · Runtime & Append observations and return for another decision. \\
+\addlinespace[3pt]
+Submit $\to$ END & Fixed · Runtime & Settle the classification or controlled submission error. \\
+\addlinespace[3pt]
+Controller $\to$ END & Conditional · Runtime & Stop on \texttt{budget\_exhausted} or \texttt{max\_steps}. \\
+\addlinespace[3pt]
+Tools $\to$ END & Conditional · Runtime & Stop on \texttt{no\_progress} or \texttt{max\_steps}. \\
+\bottomrule
+\end{tabular}
+\endgroup
+\par\vspace{12pt}
+\noindent The runtime checks \texttt{max\_steps} on each Controller, Tools, and Submit node visit. The token budget is checked immediately before model calls; a permitted call may exceed the limit after its usage is reported. The no-progress detector compares the values of the last three observation results, not just tool names. Section A6 defines the resulting run-level terminal statuses and report-row settlement rules.
+
+\clearpage
 \begin{landscape}
 \subsection*{A4. Agent state and ownership}
 \texttt{AgentState} exists only for one alert's LangGraph invocation. Because its fields have no custom LangGraph reducer annotations, each node returns the next value for a field; fields that accumulate data are rebuilt manually before being returned.
@@ -173,39 +223,36 @@ The model does not directly read the repository. It can only propose one of thre
 
 \clearpage
 \subsection*{A6. Start, Stop, and Termination Policy}
+\begingroup\small
 A run begins after configuration validation, Bandit discovery, and creation of the shared trace and model runtime. The runner processes alerts sequentially, with each alert invoking the per-alert LangGraph described in A2. In this implementation, one \texttt{max\_steps} step is one per-alert graph-node visit: Controller, Tools, and Submit each consume one node visit.
 
-\begin{landscape}
-{\small
-\renewcommand{\arraystretch}{1.25}
-\setlength{\tabcolsep}{2pt}
-\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.15\textwidth} >{\raggedright\arraybackslash}p{.36\textwidth} >{\raggedright\arraybackslash}p{.43\textwidth}@{}}
+\par\vspace{9pt}
+\noindent{\footnotesize
+\renewcommand{\arraystretch}{1.13}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.16\textwidth} >{\raggedright\arraybackslash}p{.37\textwidth} >{\raggedright\arraybackslash}p{.40\textwidth}@{}}
 \toprule
 \textbf{Terminal status} & \textbf{Trigger and decision owner} & \textbf{Consequence} \\
 \midrule
-\endfirsthead
-\toprule
-\textbf{Terminal status} & \textbf{Trigger and decision owner} & \textbf{Consequence} \\
-\midrule
-\endhead
+
 \texttt{complete} & The runner has processed every discovered Bandit alert without a run-ending failsafe or unhandled exception. Runtime-owned. & \texttt{trace.jsonl} ends with terminal status \texttt{complete}. Individual alerts may still have controlled \texttt{error} rows from malformed model submissions without causing the entire run to terminate with \texttt{error}. \\ \midrule
 \texttt{budget\_}\newline\texttt{exhausted} & Immediately before each model call, \texttt{ModelRuntime} checks whether charged usage is already at or above \texttt{budget.max\_tokens}. Runtime-owned. & The active alert and every unprocessed alert receive \texttt{status = budget\_exhausted}, \texttt{label = null}, empty evidence, and a matching settlement event. The trace ends with terminal status \texttt{budget\_exhausted}. \\ \midrule
 \texttt{max\_steps} & Before Controller, Tools, or Submit performs work, the runtime checks whether the current alert has reached \texttt{budget.max\_steps} graph-node visits. Runtime-owned. & The run stops. The active and remaining alerts receive controlled \texttt{error} rows with null labels because \texttt{report.schema.json} does not define a separate row status for \texttt{max\_steps}. The trace ends with terminal status \texttt{max\_steps}. \\ \midrule
 \texttt{no\_progress} & After the Tools node appends observations, the runtime compares the three most recent observation results. If all three result values are identical, the run stops. Runtime-owned. & The active and remaining alerts receive controlled \texttt{error} rows with null labels. The trace ends with terminal status \texttt{no\_progress}. \\ \midrule
 \texttt{error} & An unhandled runtime exception occurs, such as a discovery or setup failure not converted into an alert-level controlled result. Runtime-owned. & The runner still writes \texttt{report.json}, settles all discovered alerts as \texttt{error} rows where possible, and writes exactly one final \texttt{error} terminal event. \\
 \bottomrule
-\end{longtable}
+\end{tabular}
 }
-\end{landscape}
 
-\paragraph{Budget policy.}
+
+\paragraph{Budget policy:}
 The \texttt{budget.max\_tokens} limit applies to the entire run across all alerts, rather than resetting for each alert. Charged usage is calculated from the provider-reported input and output tokens for every \texttt{model\_call}. Cache-read and cache-write token counts are recorded in the trace when available but are not included in the charged total. The configured \texttt{budget.}\allowbreak\texttt{output\_allowance} is passed unchanged as the per-call provider output limit, and the budget admission check occurs immediately before each model call. A permitted call can cause reported usage to exceed \texttt{max\_tokens} because its exact input and output usage is known only after the provider responds. The next model-call admission check then terminates the run as \texttt{budget\_exhausted}.
 
-\paragraph{Run outcomes versus alert-row outcomes.}
-The report and trace distinguish between individual alert outcomes and whole-run termination. The report-row statuses are \texttt{classified}, \texttt{budget\_exhausted}, and \texttt{error}, while the whole-run terminal statuses recorded in the final trace event are \texttt{complete}, \texttt{budget\_exhausted}, \texttt{max\_steps}, \texttt{no\_progress}, and \texttt{error}. For example, a malformed final model response produces an \texttt{error} row for that alert, but the runner normally continues to the next alert and may ultimately finish with terminal status \texttt{complete}.
+\paragraph{Run outcomes versus alert-row outcomes:}
+The report and trace distinguish between individual alert outcomes and whole-run termination. The report-row statuses are \texttt{classified}, \texttt{budget\_exhausted}, and \texttt{error}, while the whole-run terminal statuses recorded in the final trace event are \texttt{complete}, \texttt{budget\_exhausted}, \texttt{max\_steps}, \texttt{no\_progress}, and \texttt{error}. For example, a malformed final model response produces an \texttt{error} row for that alert, but the runner normally continues to the next alert and may ultimately finish with terminal status \texttt{complete}. Every termination path preserves trace integrity by producing exactly one final terminal event, provider usage totals, one settlement event per report row, and a report containing every discovered Bandit alert.
 
-Every termination path preserves trace integrity by producing exactly one final terminal event, provider usage totals, one settlement event per report row, and a report containing every discovered Bandit alert.
-
+\endgroup
+\clearpage
 \subsection*{A7. Workspace policy and withholding boundary}
 Bandit scans the original \texttt{--input} checkout. For each alert, the runner creates a disposable copy for model investigation. The model can inspect only that copy through the dispatcher's read-only tools; the original checkout is never modified. This lets Bandit scan the required scope while keeping the model's view restricted.
 
@@ -228,10 +275,10 @@ OWASP BenchmarkPython & Every sibling benchmark case except the current case: \t
 \end{longtable}
 }
 
-\paragraph{Path safety.}
+\paragraph{Path safety:}
 Withholding is not the only defense. Every model-callable tool resolves requested paths through one shared containment check. It rejects absolute paths and paths containing \texttt{..}, resolves symlinks, and rejects any path that would escape the disposable workspace. \texttt{read\_file}, \texttt{search}, and \texttt{list\_directory} all use this boundary. Therefore, a model cannot bypass withholding with a traversal path, an absolute path, or an escaping symlink.
 
-\paragraph{Workspace lifecycle.}
+\paragraph{Workspace lifecycle:}
 \begin{enumerate}
   \item Copy the original target checkout to a new temporary directory.
   \item Move withheld paths into a private sidecar stash outside the workspace root.
@@ -246,31 +293,32 @@ The original \texttt{--input} checkout remains unchanged throughout this process
 \subsection*{C2. Results and development-set refinement}
 
 \subsubsection*{Method and cited artifacts}
-OWASP BenchmarkPython was the development set. I compared its report with the answer key only after each run. The model could not access the answer-key CSV or sibling benchmark cases. Radicale and SGLang were held out, so their results show label counts, token use, and whether the run completed, not measured accuracy. Each cited output directory contains the original \texttt{report.json} and \texttt{trace.jsonl}.
+OWASP BenchmarkPython was the development set. I compared its report with the answer key only after each run. The model could not access the answer-key CSV or sibling benchmark cases. Radicale and SGLang were held out, so their results show label counts, token use, and whether the run completed, not measured accuracy. The six new runs are supplied as paired report and trace files with matching configuration files.
 
 \subsubsection*{Results}
-% For every row you retain, name the matching report.json, trace.jsonl, and
-% configuration file. Complete the staff-equivalent six-run matrix before
-% presenting it as final evidence.
+The following six runs use GPT-5.4 with Bandit 1.9.4. Full configurations use a 400,000-token run budget and 24 maximum per-alert graph-node visits; low configurations use 5,000 tokens and 12 visits. The table counts report-row labels; ``Null'' includes both \texttt{budget\_exhausted} and \texttt{error} rows.
+
 \begin{center}
 \small
 \begin{tabular}{@{}lllrrr@{}}
 \toprule
 \textbf{Target} & \textbf{Config} & \textbf{Terminal status} & \textbf{Label 1} & \textbf{Label 0} & \textbf{Null} \\
 \midrule
-OWASP & Full & \texttt{complete} & 9 & 9 & 0 \\
-Radicale & Full & \texttt{complete} & 0 & 10 & 0 \\
-Radicale & Low & \texttt{budget\_exhausted} & 1 & 0 & 9 \\
-SGLang & Full & \texttt{complete} & 6 & 15 & 0 \\
-SGLang & Low & \texttt{budget\_exhausted} & 0 & 1 & 20 \\
-OWASP & Low & \multicolumn{4}{l}{\emph{Run this staff-equivalent GPT configuration before final submission.}} \\
+OWASP & Full & \texttt{complete} & 10 & 8 & 0 \\
+OWASP & Low & \texttt{budget\_exhausted} & 0 & 2 & 16 \\
+Radicale & Full & \texttt{complete} & 3 & 7 & 0 \\
+Radicale & Low & \texttt{budget\_exhausted} & 0 & 1 & 9 \\
+SGLang & Full & \texttt{max\_steps} & 1 & 4 & 16 \\
+SGLang & Low & \texttt{budget\_exhausted} & 0 & 0 & 21 \\
 \bottomrule
 \end{tabular}
 \end{center}
-\noindent\textit{Charged tokens / budget:} OWASP full 61,572 / 400,000; Radicale full 121,509 / 400,000; Radicale low 6,173 / 5,000; SGLang full 299,641 / 400,000; SGLang low 7,481 / 5,000.
+\noindent\textit{Charged tokens / budget:} OWASP full 65,032 / 400,000; OWASP low 5,808 / 5,000; Radicale full 131,800 / 400,000; Radicale low 6,345 / 5,000; SGLang full 147,155 / 400,000; SGLang low 5,311 / 5,000. Charged usage is provider-reported input plus output tokens; cached-token counts are traced separately.
 
 \subsubsection*{OWASP development-set measurement}
-The OWASP full run produced 8 true positives, 1 false positive, 9 true negatives, no false negatives, and no null rows. Precision was $8/(8+1)=88.9\%$ and recall was $8/(8+0)=100.0\%$. The one false positive was \texttt{BenchmarkTest00017} for Bandit rule \texttt{B317}. I used it to inspect the classifier policy without tuning on the held-out repositories.
+The new OWASP full run classified all 18 discovered alerts: 10 with label 1 and 8 with label 0, with no null rows. The low-budget run classified two alerts as label 0 and marked the remaining 16 \texttt{budget\_exhausted}. These figures are prediction counts, not a confusion matrix. Precision, recall, and false-positive/false-negative counts require matching this new full-run report against the withheld development-set answer key; the earlier run's accuracy figures must not be reused without that comparison.
+
+\noindent\textbf{Held-out run interpretation.} Radicale full completed all 10 alerts (3 label 1, 7 label 0). SGLang full stopped with terminal status \texttt{max\_steps}: five alerts were classified (1 label 1, 4 label 0), and 16 alerts have null labels and \texttt{error} report-row status. All three low-budget runs ended with \texttt{budget\_exhausted}. Their charged usage exceeded 5,000 because model-call admission is checked before each call and final usage is recorded after the provider responds. Held-out label counts do not establish accuracy.
 
 \subsubsection*{Refinements informed by development and trajectory evidence}
 I improved the prompt and run limits after reviewing development results and real trajectories.
@@ -322,7 +370,7 @@ I improved the prompt and run limits after reviewing development results and rea
 \node[note, text width=3cm, anchor=west] at (4,-7.65) {\textbf{Trace evidence:} model call (23) $\rightarrow$ \texttt{read\_file} (26) $\rightarrow$ tool result / observation (27--28) $\rightarrow$ final model call (29) $\rightarrow$ validation (32) $\rightarrow$ report settlement (33).};
 \end{tikzpicture}
 \end{center}
-\noindent\textbf{Figure C2.} Trace-derived decision loop for one successful OWASP alert. The controller routes the model's bounded file-read proposal through the dispatcher; the returned observation changes the next decision, which submits a validated label-0 report row.\\ Source: \texttt{gpt-owasp-full/trace.jsonl}, steps 23--33.
+\noindent\textbf{Figure C2.} Trace-derived decision loop for one successful OWASP alert. The controller routes the model's bounded file-read proposal through the dispatcher; the returned observation changes the next decision, which submits a validated label-0 report row.\\ Source: updated OWASP full-run \texttt{trace(7).jsonl}, steps 23--33.
 
 \clearpage
 \subsection*{C3. Limitations and alternatives}
