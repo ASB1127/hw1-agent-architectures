@@ -13,6 +13,7 @@
 
 \setlength{\parindent}{0pt}
 
+\usepackage{url}
 \begin{document}
 \maketitle
 
@@ -316,9 +317,9 @@ SGLang & Low & \texttt{budget\_exhausted} & 0 & 0 & 21 \\
 \noindent\textit{Charged tokens / budget:} OWASP full 65,032 / 400,000; OWASP low 5,808 / 5,000; Radicale full 131,800 / 400,000; Radicale low 6,345 / 5,000; SGLang full 147,155 / 400,000; SGLang low 5,311 / 5,000. Charged usage is provider-reported input plus output tokens; cached-token counts are traced separately.
 
 \subsubsection*{OWASP development-set measurement}
-The new OWASP full run classified all 18 discovered alerts: 10 with label 1 and 8 with label 0, with no null rows. The low-budget run classified two alerts as label 0 and marked the remaining 16 \texttt{budget\_exhausted}. These figures are prediction counts, not a confusion matrix. Precision, recall, and false-positive/false-negative counts require matching this new full-run report against the withheld development-set answer key; the earlier run's accuracy figures must not be reused without that comparison.
+The new OWASP full run classified all 18 discovered Bandit alerts: 10 with label 1 and 8 with label 0, with no null rows. I matched each alert's \texttt{BenchmarkTest} case identifier to the \texttt{real vulnerability} field in OWASP BenchmarkPython v0.1's \texttt{expectedresults-0.1.csv} (official repository: \url{https://github.com/OWASP-Benchmark/BenchmarkPython/blob/main/expectedresults-0.1.csv}). This is an \emph{alert-row-level} evaluation, not a unique-case evaluation: \texttt{BenchmarkTest00017} contributes two separate Bandit alerts. The comparison gives 8 true positives (TP), 2 false positives (FP), 8 true negatives (TN), and 0 false negatives (FN). Hence precision is \(TP/(TP+FP)=8/10=80.0\%\), and recall is \(TP/(TP+FN)=8/8=100.0\%\). The two false-positive alert rows belong to \texttt{BenchmarkTest00017} (B317) and \texttt{BenchmarkTest00075} (B102); both cases are marked non-vulnerable by the benchmark key. These figures describe only the 18 alerts Bandit discovered, not all 1,230 benchmark cases or the agent's ability to discover vulnerabilities absent from Bandit's output. The low-budget run classified two alerts as label 0 and marked the remaining 16 \texttt{budget\_exhausted}; those null outcomes are excluded from the full-run precision/recall calculation. The false positives illustrate why source-level evidence and conservative interpretation of flagged APIs matter, reinforcing the prompt refinements described below.
 
-\noindent\textbf{Held-out run interpretation.} Radicale full completed all 10 alerts (3 label 1, 7 label 0). SGLang full stopped with terminal status \texttt{max\_steps}: five alerts were classified (1 label 1, 4 label 0), and 16 alerts have null labels and \texttt{error} report-row status. All three low-budget runs ended with \texttt{budget\_exhausted}. Their charged usage exceeded 5,000 because model-call admission is checked before each call and final usage is recorded after the provider responds. Held-out label counts do not establish accuracy.
+\noindent\textbf{Held-out run interpretation}\par\nobreak\noindent Radicale full completed all 10 alerts (3 label 1, 7 label 0). SGLang full stopped with terminal status \texttt{max\_steps}: five alerts were classified (1 label 1, 4 label 0), and 16 alerts have null labels and \texttt{error} report-row status. All three low-budget runs ended with \texttt{budget\_exhausted}. Their charged usage exceeded 5,000 because model-call admission is checked before each call and final usage is recorded after the provider responds. Held-out label counts do not establish accuracy.
 
 \subsubsection*{Refinements informed by development and trajectory evidence}
 I improved the prompt and run limits after reviewing development results and real trajectories.
