@@ -335,43 +335,42 @@ I improved the prompt and run limits after reviewing development results and rea
 \clearpage
 \subsubsection*{Trace-derived decision loop}
 \begin{center}
+\resizebox{\textwidth}{!}{%
 \begin{tikzpicture}[
-  >=Stealth,
-  runtime/.style={draw=black!75, fill=black!4, rounded corners=2mm, very thick,
-    minimum width=7cm, minimum height=10mm, align=center, font=\small\bfseries},
-  model/.style={draw=blue!75!black, fill=blue!8, rounded corners=2mm, very thick,
-    minimum width=7cm, minimum height=10mm, align=center, font=\small\bfseries},
-  tool/.style={draw=green!50!black, fill=green!8, rounded corners=2mm, very thick,
-    minimum width=7cm, minimum height=12mm, align=center, font=\small\bfseries},
-  runtimearrow/.style={-{Stealth[length=3mm]}, black!80, very thick},
-  modelarrow/.style={-{Stealth[length=3mm]}, blue!75!black, very thick},
-  toolarrow/.style={-{Stealth[length=3mm]}, green!50!black, very thick},
-  loop/.style={-{Stealth[length=3.5mm]}, black!85, line width=1.5pt},
-  note/.style={font=\scriptsize, align=left, text width=3.6cm}
+ >=Stealth,
+ participant/.style={draw=black!65, fill=black!4, rounded corners=2mm,
+   minimum width=3.2cm, minimum height=10mm, align=center, font=\small\bfseries},
+ lifeline/.style={thin, densely dotted, gray!65},
+ request/.style={-{Stealth[length=2.4mm]}, thick},
+ response/.style={-{Stealth[length=2.4mm]}, dashed, thick},
+ event/.style={font=\scriptsize, fill=white, inner sep=2.5pt, align=center},
+ note/.style={draw=black!30, fill=yellow!12, rounded corners=1mm,
+   font=\scriptsize, align=center, inner sep=4pt}
 ]
-\node[font=\large\bfseries] at (0,.75) {Single-alert decision loop};
-\node[runtime] (alert) at (0,0) {Bandit alert\\BenchmarkTest00013 $\cdot$ B314};
-\node[runtime] (controller) at (0,-1.7) {Controller\\budget / routing / admission};
-\node[model] (triage) at (0,-3.45) {GPT-5.4 triage\\step 23: proposes \texttt{read\_file}};
-\node[tool] (read) at (0,-5.4) {Dispatcher + \texttt{read\_file}\\step 26: bounded read of \texttt{testcode/BenchmarkTest00013.py}, lines 1--120};
-\node[runtime] (observation) at (0,-7.45) {Observation added to state\\step 27--28: \texttt{ok=true}; 2,122 chars};
-\node[model] (decision) at (0,-9.6) {Controller / GPT-5.4 triage\\step 29: final JSON; label 0};
-\node[runtime] (validation) at (0,-11.4) {Validate submission and evidence\\step 32};
-\node[tool] (settle) at (0,-13.15) {Settle report row\\step 33: classified; label 0};
-
-\draw[runtimearrow] (alert) -- (controller);
-\draw[modelarrow] (controller) -- (triage);
-\draw[modelarrow] (triage) -- (read);
-\draw[toolarrow] (read) -- (observation);
-\draw[loop] (observation.west) .. controls (-5.4,-7.8) and (-5.4,-9.25) ..
-  node[note, left, xshift=-2mm] {next decision uses\\the observation} (decision.west);
-\draw[modelarrow] (decision) -- (validation);
-\draw[runtimearrow] (validation) -- (settle);
-
-\node[note, text width=3cm, anchor=west] at (4,-7.65) {\textbf{Trace evidence:} model call (23) $\rightarrow$ \texttt{read\_file} (26) $\rightarrow$ tool result / observation (27--28) $\rightarrow$ final model call (29) $\rightarrow$ validation (32) $\rightarrow$ report settlement (33).};
-\end{tikzpicture}
+\node[participant, draw=blue!70!black, fill=blue!7] at (0,0) {Model\\GPT-5.4};
+\node[participant] at (4.6,0) {Runtime\\Controller};
+\node[participant, draw=green!50!black, fill=green!7] at (9.2,0) {Dispatcher\\\texttt{read\_file}};
+\node[participant, draw=green!50!black, fill=green!7] at (13.8,0) {Workspace\\disposable copy};
+\node[participant] at (18.4,0) {Report\\settlement};
+\foreach \x in {0,4.6,9.2,13.8,18.4} \draw[lifeline] (\x,-.65) -- (\x,-17.7);
+\node[note, text width=3.5cm] at (4.6,-1.35) {Alert selected by runner:\\ \texttt{BenchmarkTest00013}, B314};
+\draw[request, blue!75!black] (4.6,-2.55) -- node[event, above] {23: controller model call} (0,-2.55);
+\draw[response, blue!75!black] (0,-3.8) -- node[event, above] {24--25: request tools\\route selected by model} (4.6,-3.8);
+\draw[request] (4.6,-5.15) -- node[event, above] {26: \texttt{read\_file}\\(start=1, end=120)} (9.2,-5.15);
+\node[note, text width=3.5cm] at (9.2,-6.1) {Path: \texttt{testcode/Benchmark/}\\\texttt{Test00013.py}};
+\draw[request, green!50!black] (9.2,-7.15) -- node[event, above] {bounded repository read} (13.8,-7.15);
+\draw[response, green!50!black] (13.8,-8.35) -- node[event, above] {file contents} (9.2,-8.35);
+\draw[response] (9.2,-9.55) -- node[event, above] {27: \texttt{ok=true}\\2,122 characters} (4.6,-9.55);
+\node[note, text width=3.5cm] at (4.6,-10.5) {28: append observation to state};
+\draw[request, blue!75!black] (4.6,-11.65) -- node[event, above] {29: next model call\\with observation} (0,-11.65);
+\draw[response, blue!75!black] (0,-13.0) -- node[event, above] {30--31: final JSON\\label 0; submit route} (4.6,-13.0);
+\node[note, text width=3.5cm] at (4.6,-14.1) {32: validate JSON and evidence};
+\draw[request] (4.6,-15.45) -- node[event, above] {33: settle classified row, label 0} (18.4,-15.45);
+\node[note, draw=green!50!black, fill=green!7, text width=3.0cm] at (18.4,-16.5) {\texttt{status=classified}\\\texttt{label=0}};
+\end{tikzpicture}%
+}
 \end{center}
-\noindent\textbf{Figure C2.} Trace-derived decision loop for one successful OWASP alert. The controller routes the model's bounded file-read proposal through the dispatcher; the returned observation changes the next decision, which submits a validated label-0 report row.\\ Source: \texttt{results/owasp-full/trace.jsonl}, steps 23--33.
+\noindent\textbf{Figure C2.} Sequence diagram derived from one successful OWASP alert trajectory. The model proposes a bounded read, the runtime dispatches it, the resulting observation informs the next model call, and the runtime validates and settles the final classification.\\ Source: \texttt{results/owasp-full/trace.jsonl}, steps 23--33.
 
 \clearpage
 \subsection*{C3. Limitations and alternatives}

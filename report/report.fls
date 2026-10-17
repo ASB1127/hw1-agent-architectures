@@ -256,12 +256,10 @@ INPUT /Users/amitbal/Library/texmf/fonts/tfm/public/lm/rm-lmtt9.tfm
 INPUT /Users/amitbal/Library/texmf/fonts/tfm/public/lm/rm-lmri10.tfm
 INPUT /Users/amitbal/Library/texmf/fonts/enc/dvips/lm/lm-mathit.enc
 INPUT /Users/amitbal/Library/texmf/fonts/tfm/public/lm/rm-lmtk10.tfm
-INPUT /Users/amitbal/Library/texmf/fonts/tfm/public/lm/rm-lmbx8.tfm
 INPUT /Users/amitbal/Library/texmf/fonts/tfm/public/lm/rm-lmtt8.tfm
 INPUT report.aux
 INPUT /Users/amitbal/Library/texmf/fonts/type1/public/lm/lmbx10.pfb
 INPUT /Users/amitbal/Library/texmf/fonts/type1/public/lm/lmbx12.pfb
-INPUT /Users/amitbal/Library/texmf/fonts/type1/public/lm/lmbx8.pfb
 INPUT /Users/amitbal/Library/texmf/fonts/type1/public/lm/lmbx9.pfb
 INPUT /Users/amitbal/Library/texmf/fonts/type1/public/lm/lmmi10.pfb
 INPUT /Users/amitbal/Library/texmf/fonts/type1/public/lm/lmr10.pfb
@@ -271,7 +269,6 @@ INPUT /Users/amitbal/Library/texmf/fonts/type1/public/lm/lmr8.pfb
 INPUT /Users/amitbal/Library/texmf/fonts/type1/public/lm/lmr9.pfb
 INPUT /Users/amitbal/Library/texmf/fonts/type1/public/lm/lmri10.pfb
 INPUT /Users/amitbal/Library/texmf/fonts/type1/public/lm/lmsy10.pfb
-INPUT /Users/amitbal/Library/texmf/fonts/type1/public/lm/lmsy8.pfb
 INPUT /Users/amitbal/Library/texmf/fonts/type1/public/lm/lmtk10.pfb
 INPUT /Users/amitbal/Library/texmf/fonts/type1/public/lm/lmtt10.pfb
 INPUT /Users/amitbal/Library/texmf/fonts/type1/public/lm/lmtt12.pfb

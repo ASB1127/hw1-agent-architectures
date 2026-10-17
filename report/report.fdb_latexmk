@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1792268458.59599 "report.tex" "report.pdf" "report" 1792268463.63886 0
+["pdflatex"] 1792271248.7199 "report.tex" "report.pdf" "report" 1792271253.9655 0
   "/Users/amitbal/Library/texmf/fonts/enc/dvips/lm/lm-mathit.enc" 1202520719 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
   "/Users/amitbal/Library/texmf/fonts/enc/dvips/lm/lm-mathsy.enc" 1202520719 2840 216e6e45ad352e2456e1149f28885bee ""
   "/Users/amitbal/Library/texmf/fonts/enc/dvips/lm/lm-rm.enc" 1202520719 2327 9d6df24f9c4f7368395224341a95523a ""
@@ -22,7 +22,6 @@
   "/Users/amitbal/Library/texmf/fonts/tfm/public/lm/lmsy9.tfm" 1148093231 1300 ca37bc0213808d24f74bf4d32f81f80d ""
   "/Users/amitbal/Library/texmf/fonts/tfm/public/lm/rm-lmbx10.tfm" 1254269338 11880 35fcf136a2198418dfc53c83e9e2a07f ""
   "/Users/amitbal/Library/texmf/fonts/tfm/public/lm/rm-lmbx12.tfm" 1254269338 11880 ea60d06924270684e6f852f3141c992b ""
-  "/Users/amitbal/Library/texmf/fonts/tfm/public/lm/rm-lmbx8.tfm" 1254269338 11868 731e03b24d399279cf9609d002110394 ""
   "/Users/amitbal/Library/texmf/fonts/tfm/public/lm/rm-lmbx9.tfm" 1254269338 11872 6fc83bd89656207db7e11b4f7ac7546e ""
   "/Users/amitbal/Library/texmf/fonts/tfm/public/lm/rm-lmr10.tfm" 1254269338 11868 4f81e9b6033c032bdaf9884f4d7ef412 ""
   "/Users/amitbal/Library/texmf/fonts/tfm/public/lm/rm-lmr12.tfm" 1254269338 11888 6841b91e46b65cf41a49b160e6e74130 ""
@@ -41,7 +40,6 @@
   "/Users/amitbal/Library/texmf/fonts/tfm/public/lm/ts1-lmr10.tfm" 1254269338 1556 b86d923e6b2f9aab2e313098a95cb0b8 ""
   "/Users/amitbal/Library/texmf/fonts/type1/public/lm/lmbx10.pfb" 1255129361 121021 1bf809ce4a594679006bd72263eba59b ""
   "/Users/amitbal/Library/texmf/fonts/type1/public/lm/lmbx12.pfb" 1255129361 116908 1fca96723793882c2e0160350c192fc8 ""
-  "/Users/amitbal/Library/texmf/fonts/type1/public/lm/lmbx8.pfb" 1255129361 125241 1d6de6a4ab0d08571b46009b6426dace ""
   "/Users/amitbal/Library/texmf/fonts/type1/public/lm/lmbx9.pfb" 1255129361 126646 439622e6fd57f388c9979d39c4fce535 ""
   "/Users/amitbal/Library/texmf/fonts/type1/public/lm/lmmi10.pfb" 1254269338 30388 702fae6a5f0e6e9c48a1d872b442ffcf ""
   "/Users/amitbal/Library/texmf/fonts/type1/public/lm/lmr10.pfb" 1255129361 119235 f35b44530a1d90eb90fe15d9cba67ea0 ""
@@ -51,7 +49,6 @@
   "/Users/amitbal/Library/texmf/fonts/type1/public/lm/lmr9.pfb" 1255129361 121065 50bbfa703ce7e11638752ef5a6d120c7 ""
   "/Users/amitbal/Library/texmf/fonts/type1/public/lm/lmri10.pfb" 1255129361 112593 fda2373ba4420af33949610de4c28fe8 ""
   "/Users/amitbal/Library/texmf/fonts/type1/public/lm/lmsy10.pfb" 1254269338 27863 09ce3735688ffde955e72da27c95b61a ""
-  "/Users/amitbal/Library/texmf/fonts/type1/public/lm/lmsy8.pfb" 1254269338 27802 5c876bb2c4040caaf035d60bd74a86bd ""
   "/Users/amitbal/Library/texmf/fonts/type1/public/lm/lmtk10.pfb" 1255129361 117319 7f8361f845845ce6d5b36cbd9f9cf377 ""
   "/Users/amitbal/Library/texmf/fonts/type1/public/lm/lmtt10.pfb" 1255129361 113227 1010e11451afc2822c95dae77c390042 ""
   "/Users/amitbal/Library/texmf/fonts/type1/public/lm/lmtt12.pfb" 1255129361 110323 92daea7ca7b4120bd2b54b047c93be27 ""
@@ -160,8 +157,8 @@
   "/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1775425014 5573038 b99aad5e4898a9034e953632f940512b ""
   "/usr/local/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt" 1774209607 3636776 dc5fa9b6b1453b9d196cd42edf876004 ""
   "/usr/local/texlive/2026/texmf.cnf" 1774209515 577 648cd9f92f9c0eac486f4c71c85cfbbe ""
-  "report.aux" 1792268463.54842 1190 ae03e65a4a500e533b310db4791ee5ce "pdflatex"
-  "report.tex" 1792268455.60797 34371 fd19aee7f0568d927a834be8367572bc ""
+  "report.aux" 1792271253.87816 1190 ae03e65a4a500e533b310db4791ee5ce "pdflatex"
+  "report.tex" 1792271143.43198 34445 d82e30677e125451f8cbd7a95f12dabe ""
   (generated)
   "report.aux"
   "report.log"

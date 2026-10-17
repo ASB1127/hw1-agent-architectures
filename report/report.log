@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.22)  17 OCT 2026 16:20
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.22)  17 OCT 2026 17:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -659,7 +659,7 @@ s recorded in the fi-nal trace event are \OT1/lmtt/m/n/10 complete\OT1/lmr/m/n/
 {/Users/amitbal/Library/texmf/fonts/enc/dvips/lm/lm-mathit.enc}]
 [11]
 LaTeX Font Info:    Font shape `OT1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `OT1/lmtt/b/n' tried instead on input line 355.
+(Font)              Font shape `OT1/lmtt/b/n' tried instead on input line 371.
  [12
 
 ] [13
@@ -671,32 +671,30 @@ L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 13670 strings out of 467525
- 285378 string characters out of 5418982
- 683310 words of memory out of 5000000
- 42308 multiletter control sequences out of 15000+600000
- 723145 words of font info for 100 fonts, out of 8000000 for 9000
+ 13617 strings out of 467525
+ 284382 string characters out of 5418982
+ 683889 words of memory out of 5000000
+ 42256 multiletter control sequences out of 15000+600000
+ 720202 words of font info for 99 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,9n,104p,1053b,816s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,9n,104p,1053b,822s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </Users/amitbal/Library/texmf/fonts/type1/public/lm/lmbx10.pfb></Users/amitba
 l/Library/texmf/fonts/type1/public/lm/lmbx12.pfb></Users/amitbal/Library/texmf/
-fonts/type1/public/lm/lmbx8.pfb></Users/amitbal/Library/texmf/fonts/type1/publi
-c/lm/lmbx9.pfb></Users/amitbal/Library/texmf/fonts/type1/public/lm/lmmi10.pfb><
-/Users/amitbal/Library/texmf/fonts/type1/public/lm/lmr10.pfb></Users/amitbal/Li
-brary/texmf/fonts/type1/public/lm/lmr12.pfb></Users/amitbal/Library/texmf/fonts
-/type1/public/lm/lmr17.pfb></Users/amitbal/Library/texmf/fonts/type1/public/lm/
-lmr8.pfb></Users/amitbal/Library/texmf/fonts/type1/public/lm/lmr9.pfb></Users/a
-mitbal/Library/texmf/fonts/type1/public/lm/lmri10.pfb></Users/amitbal/Library/t
-exmf/fonts/type1/public/lm/lmsy10.pfb></Users/amitbal/Library/texmf/fonts/type1
-/public/lm/lmsy8.pfb></Users/amitbal/Library/texmf/fonts/type1/public/lm/lmtk10
-.pfb></Users/amitbal/Library/texmf/fonts/type1/public/lm/lmtt10.pfb></Users/ami
-tbal/Library/texmf/fonts/type1/public/lm/lmtt12.pfb></Users/amitbal/Library/tex
-mf/fonts/type1/public/lm/lmtt8.pfb></Users/amitbal/Library/texmf/fonts/type1/pu
-blic/lm/lmtt9.pfb>
-Output written on report.pdf (13 pages, 437642 bytes).
+fonts/type1/public/lm/lmbx9.pfb></Users/amitbal/Library/texmf/fonts/type1/publi
+c/lm/lmmi10.pfb></Users/amitbal/Library/texmf/fonts/type1/public/lm/lmr10.pfb><
+/Users/amitbal/Library/texmf/fonts/type1/public/lm/lmr12.pfb></Users/amitbal/Li
+brary/texmf/fonts/type1/public/lm/lmr17.pfb></Users/amitbal/Library/texmf/fonts
+/type1/public/lm/lmr8.pfb></Users/amitbal/Library/texmf/fonts/type1/public/lm/l
+mr9.pfb></Users/amitbal/Library/texmf/fonts/type1/public/lm/lmri10.pfb></Users/
+amitbal/Library/texmf/fonts/type1/public/lm/lmsy10.pfb></Users/amitbal/Library/
+texmf/fonts/type1/public/lm/lmtk10.pfb></Users/amitbal/Library/texmf/fonts/type
+1/public/lm/lmtt10.pfb></Users/amitbal/Library/texmf/fonts/type1/public/lm/lmtt
+12.pfb></Users/amitbal/Library/texmf/fonts/type1/public/lm/lmtt8.pfb></Users/am
+itbal/Library/texmf/fonts/type1/public/lm/lmtt9.pfb>
+Output written on report.pdf (13 pages, 413032 bytes).
 PDF statistics:
- 148 PDF objects out of 1000 (max. 8388607)
- 95 compressed objects within 1 object stream
+ 138 PDF objects out of 1000 (max. 8388607)
+ 89 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 
