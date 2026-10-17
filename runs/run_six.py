@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Run or preflight the six HW1 target/configuration combinations.
 
-Each completed run is saved under runs/evaluation/<target>-<budget>/ with the
+Each completed run is saved under results/<target>-<budget>/ with the
 exact generated config.toml beside report.json and trace.jsonl.
 """
 
@@ -196,7 +196,7 @@ def main() -> None:
     parser.add_argument(
         "--output-root",
         type=Path,
-        default=ROOT / "runs" / "evaluation",
+        default=ROOT / "results",
         help="Directory that receives the six preserved run artifacts.",
     )
     args = parser.parse_args()
