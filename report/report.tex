@@ -297,7 +297,7 @@ The original \texttt{--input} checkout remains unchanged throughout this process
 OWASP BenchmarkPython was the development set. I compared its report with the answer key only after each run. The model could not access the answer-key CSV or sibling benchmark cases. Radicale and SGLang were held out, so their results show label counts, token use, and whether the run completed, not measured accuracy. The six new runs are supplied as paired report and trace files with matching configuration files.
 
 \subsubsection*{Results}
-The following six runs use GPT-5.4 with Bandit 1.9.4. Full configurations use a 400,000-token run budget and 24 maximum per-alert graph-node visits; low configurations use 5,000 tokens and 12 visits. The table counts report-row labels; ``Null'' includes both \texttt{budget\_exhausted} and \texttt{error} rows.
+The following six runs use GPT-5.4 with Bandit 1.9.4. Full configurations use a 400,000-token run budget; the OWASP and Radicale runs use 24 maximum per-alert graph-node visits, while the rerun of SGLang uses 64. Low configurations use 5,000 tokens and 12 visits. The table counts report-row labels; ``Null'' includes both \texttt{budget\_exhausted} and \texttt{error} rows.
 
 \begin{center}
 \small
@@ -309,17 +309,17 @@ OWASP & Full & \texttt{complete} & 10 & 8 & 0 \\
 OWASP & Low & \texttt{budget\_exhausted} & 0 & 2 & 16 \\
 Radicale & Full & \texttt{complete} & 3 & 7 & 0 \\
 Radicale & Low & \texttt{budget\_exhausted} & 0 & 1 & 9 \\
-SGLang & Full & \texttt{max\_steps} & 1 & 4 & 16 \\
+SGLang & Full & \texttt{complete} & 6 & 15 & 0 \\
 SGLang & Low & \texttt{budget\_exhausted} & 0 & 0 & 21 \\
 \bottomrule
 \end{tabular}
 \end{center}
-\noindent\textit{Charged tokens / budget:} OWASP full 65,032 / 400,000; OWASP low 5,808 / 5,000; Radicale full 131,800 / 400,000; Radicale low 6,345 / 5,000; SGLang full 147,155 / 400,000; SGLang low 5,311 / 5,000. Charged usage is provider-reported input plus output tokens; cached-token counts are traced separately.
+\noindent\textit{Charged tokens / budget:} OWASP full 65,032 / 400,000; OWASP low 5,808 / 5,000; Radicale full 131,800 / 400,000; Radicale low 6,345 / 5,000; SGLang full 319,327 / 400,000; SGLang low 5,311 / 5,000. Charged usage is provider-reported input plus output tokens; cached-token counts are traced separately.
 
 \subsubsection*{OWASP development-set measurement}
 The OWASP full run classified all 18 Bandit alerts: 10 label 1, 8 label 0, and no null rows. I matched each alert row's case identifier to the \texttt{real vulnerability} field in \texttt{expectedresults-0.1.}\allowbreak\texttt{csv}. This is an alert-row evaluation, so \texttt{BenchmarkTest00017} contributes two alerts. The result is 8 true positives, 2 false positives, 8 true negatives, and 0 false negatives: precision is \(8/10=80.0\%\) and recall is \(8/8=100.0\%\). The false positives are \texttt{BenchmarkTest00017} (B317) and \texttt{BenchmarkTest00075} (B102), both marked non-vulnerable by the benchmark key. These metrics cover only the 18 alerts Bandit found, not all 1,230 benchmark cases or vulnerabilities Bandit did not report. The low-budget run classified two alerts as label 0 and marked the other 16 \texttt{budget\_exhausted}; those null rows are excluded from the full-run metrics. The false positives motivated the conservative, evidence-based prompt refinements below.
 
-\noindent\textbf{Held-out run interpretation}\par\nobreak\noindent Radicale full completed all 10 alerts (3 label 1, 7 label 0). SGLang full stopped with terminal status \texttt{max\_steps}: five alerts were classified (1 label 1, 4 label 0), and 16 alerts have null labels and \texttt{error} report-row status. All three low-budget runs ended with \texttt{budget\_exhausted}. Their charged usage exceeded 5,000 because model-call admission is checked before each call and final usage is recorded after the provider responds. Held-out label counts do not establish accuracy.
+\noindent\textbf{Held-out run interpretation}\par\nobreak\noindent Radicale full completed all 10 alerts (3 label 1, 7 label 0). The SGLang full rerun completed all 21 alerts (6 label 1, 15 label 0). All three low-budget runs ended with \texttt{budget\_exhausted}. Their charged usage exceeded 5,000 because model-call admission is checked before each call and final usage is recorded after the provider responds. Held-out label counts do not establish accuracy.
 
 \subsubsection*{Refinements informed by development and trajectory evidence}
 I improved the prompt and run limits after reviewing development results and real trajectories.
@@ -328,7 +328,7 @@ I improved the prompt and run limits after reviewing development results and rea
   \item \textbf{Prompt:} I added clearer rules for data-flow, weak-primitive, and XML alerts. I asked the model to use narrow reads, avoid duplicate calls and repeated no-match searches, return evidence-grounded JSON, and submit once it had enough evidence. I also limited it to five tool rounds.
 
   \item \textbf{Tool output:} \texttt{read\_file} now returns at most 200 lines and gives the next start line. \texttt{search} returns at most ten matches. These limits reduce context growth while allowing the model to request more focused follow-up reads.
-  \item \textbf{Budget and steps:} I raised the full token budget to 400,000 after budget-limited runs. For SGLang development runs, I also increased the step limit after an alert reached the earlier limit while still making different investigation requests.
+  \item \textbf{Budget and steps:} I raised the full token budget to 400,000 after budget-limited runs. For the SGLang rerun, I also increased the step limit after an alert reached the earlier limit while still making different investigation requests.
   \item \textbf{Temperature debugging:} I used temperature zero while comparing tool-use paths to reduce sampling variation. This was a debugging experiment, not evidence that temperature alone improved accuracy.
 \end{itemize}
 
