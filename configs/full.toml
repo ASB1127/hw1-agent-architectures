@@ -11,4 +11,4 @@ name = "gpt-5.4"
 [budget]
 max_tokens = 400000
 output_allowance = 1024
-max_steps = 24
+max_steps = 64
